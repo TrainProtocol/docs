@@ -1,0 +1,17 @@
+<Steps>
+  <Step title="User Commit">
+    The user creates a PreHTLC for Solver(AB).
+  </Step>
+  <Step title="Solver(AB) Commit">
+    Once detected, Solver(AB) creates a PreHTLC for Solver(BC).
+  </Step>
+  <Step title="Solver(BC) Lock">
+    Solver(BC) then creates an HTLC for the user.
+  </Step>
+  <Step title="User, Solver(AB) AddLock">
+    The user detects the last transaction, retrieves the hashlock, and converts their PreHTLC to an HTLC on Chain A. Solver(AB) does the same on Chain B.
+  </Step>
+  <Step title="Unlocks">
+    Solver(BC) can now release the user’s funds on Chain C and claim their funds on Chain B, while Solver(AB) can claim their funds on Chain A.
+  </Step>
+</Steps>

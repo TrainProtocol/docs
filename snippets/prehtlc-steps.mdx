@@ -1,0 +1,14 @@
+<Steps>
+  <Step title="User Commit">
+    The user creates a PreHTLC, committing funds for the selected Solver - `commit()`.
+  </Step>
+  <Step title="Solver Lock">
+    The Solver detects this transaction, generates a random Secret S, and creates an HTLC, locking funds (minus the Solver Fee) for the user in the destination chain - `lock()`.
+  </Step>
+  <Step title="User AddLock">
+    The user observes the transaction on the destination chain, retrieves the Hashlock, and converts their PreHTLC to an HTLC on the source chain. The PreHTLC can only be converted once with a single Hashlock; no other information can be altered - `addLock()`.
+  </Step>
+  <Step title="Unlocks">
+    Upon seeing this conversion, the Solver reveals the Secret S on the destination chain to release the user's funds and then reveals the Secret S on the source chain to claim their funds - `redeem()`.
+  </Step>
+</Steps>

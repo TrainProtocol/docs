@@ -1,0 +1,11 @@
+---
+title: 'Reward-Slash'
+description: 'Incentivizing Solvers to act honestly without creating inconveniences for users'
+icon: slash
+---
+
+Solvers can sometimes misbehave, leading to various edge cases. For example, a Solver might refuse to release a user’s funds. While users can always manually claim their funds, ensuring no loss, this process creates significant inconvenience.
+
+To address this, we introduce a [Reward-Slashing Mechanism](/protocol-spec/reward-slashing) to incentivize Solvers to act correctly. When locking funds for a user, the Solver also locks an additional reward amount with a timelock. If the Solver successfully transfers the user’s assets before the timelock expires, the reward is released to the Solver. However, if the Solver fails to act in time, the reward is transferred to the party that executes the function to release the user’s assets. 
+
+This mechanism serves as both an incentive for the Solver and a penalty (or "slash") for failing to fulfill their responsibility.

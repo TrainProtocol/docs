@@ -1,0 +1,27 @@
+---
+title: 'Auction'
+description: 'Explain the technical specification of the Auction system'
+icon: scale-balanced
+---
+
+<Steps>
+  <Step title="User Swap & Solver Discovery">
+    The user specifies swap details in the dApp. The dApp calls the `discover()` function of the [Discovery contract](/protocol-spec/discovery) to get all possible Solvers for the specific swap.
+  </Step>
+  <Step title="User Commit">
+    The user commits funds by specifying an array of Solvers (Solvers[]) and a timelock, which defines the auction duration. The timelock should allow a reasonable amount of time for the auction to take place. It can exceed the Solver's `lock()` timelock but must be reduced in `addLock` to prevent the Solver from potentially stealing user funds. At this stage, there is no need to specify the `srcReceiver`; the final `srcReceiver` will be added during `addLock`. In the `tokenCommitted` event, the array of Solvers must be emitted.
+  </Step>
+  <Step title="Auction">
+    All Solvers subscribed to the `tokenCommitted` event for their respective addresses are notified. The auction is executed (treated as a black box with the only requirement that the auction will only execute with Solvers registered in the Discovery contract), and one Solver is selected as the winner to lock the funds.
+  </Step>
+  <Step title="Lock">
+    The user then calls `addLock()` or `addLockSig()` with the same data but with a decreased timelock and also specifies the `srcReceiver` from the original Solvers list, which must be the winning Solver.
+  </Step>
+</Steps>
+
+### The Auction
+
+<Warning>Work in progress</Warning>
+
+
+

@@ -1,0 +1,34 @@
+---
+title: 'Solver Implementation'
+description: 'Describes the protocol implementation for the Solcer'
+icon: network-wired
+---
+
+<Steps>
+  <Step title="Monitor the source chain">
+    Subscribe to `TokenCommitted` events to detect any commitments made to your address.
+  </Step>
+  <Step title="Lock funds on the destination chain">
+    - Generate `S` and `hashlock`.
+    - When a commitment is detected, call `lock()` on the destination chain and pass the generated `hashlock` with `timelock` of [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
+  </Step>
+  <Step title="Verify the commitment lock">
+    - Monitor the source chain for the `TokenLockAdded` event (or `getDetails()` function) on the existing commitment.
+    - Once detected, verify that the `hashlock` matches the one you previously generated.
+    - Verify that the `timelock` provides sufficient time to act, ensuring it is at least [$T + \Delta$](/protocol-spec/model/#standard-flow).
+  </Step>
+  <Step title="(signature flow) hashlock addition on behalf of the user" stepNumber="3*">
+    Call the `addLockSig()` function, providing both the user's `signature` and the message data (`Id`, `hashlock`, `timelock`).
+  </Step>
+  <Step title="Complete the exchange" stepNumber="4">
+    - Once verified, call `redeem()` on both the source and destination chains.
+    - Pass in the previously generated `S` value.
+  </Step>
+</Steps>
+
+<Warning>
+[Edge Case: Party 1 fails to add lock to the commitment](edge-cases)
+
+- If the commitment is not locked, wait for the `timelock` to expire.
+- Call `refund()` on the destination chain to reclaim your funds.
+</Warning>

@@ -1,0 +1,42 @@
+---
+title: 'Protocol Updates'
+description: 'Protocol updates and improvements'
+mode: wide
+---
+
+<Update label="2024-12-26" description="v0.1.6-testnets">
+    - Removed the Atomic Pool concept.
+    - Introduced the new [Reward & Slash mechanism](/protocol/slashing) embedded in Atomic Swaps themselves, eliminating the need for Atomic Pools.
+</Update>
+
+<Update label="2024-12-14" description="v0.1.5-testnets">
+    - Added introduction to the [Auction system](/protocol/auction) and the [technical details](/protocol-spec/auction).
+</Update>
+
+<Update label="2024-12-12" description="v0.1.5-testnets">
+    - Released TRAIN [Bridge dApp](https://train.tech/app) to use [Signature flow](/protocol-spec/core) instead of the user doing 2 transactions; the user now does 1 transaction and 1 signature.
+</Update>
+
+<Update label="2024-12-11" description="v0.1-testnets">
+    - Updated [dApp Implementation](/protocol-spec/implementation-dApp) and [dApp](/protocol/dApp) pages to include details for verifying the state of destination chains via Light Clients and/or multiple providers.
+    - Replaced 'LP' terminology with 'Solver' to avoid confusion with passive liquidity providing and to better explain the concept.
+</Update>
+
+<Update label="2024-11-29" description="v0.1.1-testnets">
+    - Prepared branch for EVM security audit
+    - EVM Gas Optimization
+
+    | Function | Optimization | Gas (new) | Gas (old) | 
+    |---|---|---|---|
+    | `commit()` | 52.7% | 146,300 | 309,608 |
+    | `addLock()` | 56.6% | 34,250 | 78,961 |
+    | `addLockSig()` | 48.9% | 42,103 | 82,447 |
+    | `refund()` | 35.5% | 39,460 | 61,262 |
+    | `redeem()` | 45.5% | 45,835 | 84,110 |
+</Update>
+
+<Update label="2024-11-27" description="v0.1-testnets">
+    - Released the first version of the TRAIN protocol. Live [here](https://train.tech/app) on EVMs, Fuel, Starknet, Solana, and TON testnets.
+    - Released the first version of the [Bridge Deployment API](/api-reference).
+    - Released the documentation page.
+</Update>

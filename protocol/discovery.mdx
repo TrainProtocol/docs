@@ -1,0 +1,13 @@
+---
+title: 'Discovery'
+description: 'Description of the discovery system and the mechanics of the token'
+icon: lighthouse
+---
+
+TRAIN has an on-chain [Discovery Registry](/protocol-spec/discovery) for protocol metadata to ensure users, auctions, and integrators can discover Solvers. Solvers will register their addresses and the routes they support.
+
+Since the registry is permissionless, any person can register. Flood protection is necessary to prevent malicious actors from registering numerous "empty" Solvers that fail to complete transactions and potentially DDoS the protocol.
+
+While staking could be a solution, it only works if we can determine an Solver's dishonesty in the network where the registry is deployed. However, autonomously verifying Solver behavior is not possible, as the registry chain has no information about Solver behavior in other chains.
+
+Therefore, the Discovery registry implements a burning mechanism. Any active/registering Solvers will **lock in a certain amount of tokens,** which will be **burned** daily/monthly as a protocol fee for operating as an Solver.

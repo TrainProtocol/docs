@@ -1,0 +1,46 @@
+---
+title: 'dApp Implementation'
+description: 'Describes the protocol implementation for the User/dApp'
+icon: browser
+---
+
+<Steps>
+  <Step title="Create a commitment">
+    Call the `commit()` function to lock funds for a specified party with a timelock of [$T + \beta$](/protocol-spec/model/#standard-flow).
+  </Step>
+  <Step title="Monitor the destination chain">
+    - Watch for the `TokenLocked` event or use the `Id` on the destination chain by calling `getDetails()`.
+    - Verify that the `hashlock` of the `HTLC` on the destination chain provides sufficient time to act, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
+    - Once detected, capture the `hashlock` value.
+    <Note>
+      The state of the destination chain should be read from a Light Client if one exists; if not, it should be read from multiple RPC providers.
+    </Note>
+  </Step>
+  <Step title="Add lock to your PreHTLC on the source chain">
+    Call `addLock()`, passing in the captured `hashlock` and `timelock` of [$T + \Delta$](/protocol-spec/model/#standard-flow).
+  </Step>
+  <Step title="(signature flow) Sign a message instead of adding a lock" stepNumber="3*">
+    The user signs a message containing the `Id`, `hashlock`, and `timelock`.
+  </Step>
+</Steps>
+
+<Warning>
+[Edge Case: Party 2 fails to act on commitment](/protocol-spec/edge-cases)
+
+- Wait for the `timelock` to expire.
+- Call `refund()` on the source chain to reclaim your funds.
+</Warning>
+
+<Warning>
+[Edge Case: Party 2 fails to release at all](/protocol-spec/edge-cases)
+
+- Wait for the `timelock` to expire.
+- Call `refund()` on the source chain to reclaim your funds.
+</Warning>
+
+<Warning>
+[Edge Case: Party 2 fails to release Party 1’s funds](/protocol-spec/edge-cases)
+
+- If funds are not released on the destination chain, watch the source chain for the `TokenRedeemed` event (or `getDetails()` function).
+- Once detected, capture the `secret` and call `redeem()` on the destination chain.
+</Warning>

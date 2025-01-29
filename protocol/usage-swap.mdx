@@ -1,0 +1,19 @@
+---
+title: 'Cross-Chain Swap'
+description: 'Explains how the protocol can be used for cross-chain swaps'
+icon: swap
+---
+
+<Steps>
+  <Step title="Discovery">
+    Read the on-chain [Discovery](/protocol/discovery) contract to retrieve protocol metadata: active Solvers, networks, and routes.
+  </Step>
+  <Step title="Auction / Solver Selection">
+    Send an order to the [Auction](/protocol/auction) to find the best Solver/price for the given source and destination.
+  </Step>
+  <Step title="User and Solver Atomic Swap">
+    Perform an atomic swap using [PreHTLCs](protocol/atomic-swaps-prehtlc).
+  </Step>
+</Steps>
+
+The TRAIN Protocol makes bridging **completely transparent and fully controllable** by the client. The integrator has complete control over every aspect, from selecting and ranking Solvers independently to performing final verification, ensuring the entire process is **trustless, transparent, and under their control**. The detailed implementation steps can be found in the [dApp Implementation](/protocol-spec/implementation-dApp) spec.

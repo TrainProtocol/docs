@@ -1,0 +1,28 @@
+---
+title: 'Adding a New Network'
+description: 'Explains how networks can be added to the protocol'
+icon: network-wired
+---
+
+<Steps>
+  <Step title="Contract Implementation">
+    Implement [PreHTLC](/protocol/atomic-swaps-prehtlc) standards in the network.
+  </Step>
+  <Step title="Solver Agent Implementation">
+    If there is no existing implementation (e.g., EVM), implement the Solver Agent Chain Library for the new network (functions for interacting with deployed PreHTLC contracts on specific chains).
+  </Step>
+  <Step title="Run Solver">
+    Run an Solver for two networks—one well connected to others (already active Solvers) and the new network.
+  </Step>
+  <Step title="Register Solver">
+    Register the Solver and PreHTLC addresses in the [Discovery](/protocol/discovery) contract.
+  </Step>
+  <Step title="dApp Implementation">
+    If there is no existing implementation (e.g., EVM), implement the Client Chain Library for the new network (functions for interacting with wallets on specific chains, subscribing to contract events, and composing user transactions).
+  </Step>
+  <Step title="dApp Deploy">
+    Create a pull request for a [popular bridge UI](https://train.tech/app) or fork and deploy a separate UI.
+  </Step>
+</Steps>
+
+These steps can be performed independently without needing permission or interaction with any party or entity. At this stage, anyone can transfer assets to the new network. The network-adding process in the TRAIN protocol is **similar to adding an ERC20 token to the Uniswap protocol**, making bridging trustless and permissionless. The detailed implementation steps can be found in the [Solver Implementation](/protocol-spec/implementation-solver) spec.

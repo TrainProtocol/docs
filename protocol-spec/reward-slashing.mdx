@@ -1,0 +1,49 @@
+---
+title: 'Reward-Slash'
+description: 'Explains how the system penalizes Solver misbehavior and rewards others for acting to release user funds.'
+icon: slash
+---
+<Warning>
+While users can always manually claim their funds, this protocol aims to prevent delays and inconvenience through economic incentives.
+</Warning>
+
+Solvers can exhibit unpredictable behavior that leads to various edge cases, such as refusing to release user funds. While users always retain the ability to manually claim their funds, preventing any permanent loss, this situation creates significant inconvenience.
+
+## Core Mechanism
+
+The **Reward-Slashing Mechanism** incentivizes proper Solver behavior. The process begins when a Solver locks funds for a user. At this point, they must also lock an additional reward amount secured by a timelock. This reward serves as an incentive - if the Solver successfully transfers the user's assets before the timelock expires, they receive their reward back. However, if they fail to act within the specified timeframe, the reward transfers to whoever executes the function to release the user's assets.
+
+## Implementation Details
+
+When a Solver locks funds for a user, the **lock** function requires additional **reward amount** along with a **rewardTimelock** parameter. This timelock must be set to a future timestamp and cannot exceed the timelock duration of the associated HTLC. The system records these reward details both through event emission in the **TokenLocked** event and storage in a rewards mapping, which links to the unique ID of the corresponding HTLC. Users can access reward information for any HTLC by calling the **getReward** function with the appropriate ID.
+
+<Warning>
+  The `rewardTimelock` must always be set to a future timestamp and cannot exceed the HTLC timelock duration.
+</Warning>
+
+
+## Redemption Process
+
+
+The redeem function handles rewards differently based on timing and who initiates the redemption. The logic is illustrated below using pseudocode:
+
+```solidity
+if (!rewardTimelock.expired) {
+    transfer(reward, solver);
+    transfer(funds, user);
+} else {
+    if (msg.sender == user) {
+        transfer(reward + funds, user);
+    } else {
+        transfer(funds, user);
+        transfer(reward, msg.sender);
+    }
+}
+```
+
+## Security Considerations
+
+The `rewardTimelock` serves as a crucial protection against MEV attacks. It provides Solvers adequate time to assess whether they can execute the **redeem** function within the specified timeframe. Even if Solvers miss their initial window, they can still call the function later to retrieve their reward, provided no one else has already executed it.
+
+
+

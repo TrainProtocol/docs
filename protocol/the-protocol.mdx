@@ -1,0 +1,27 @@
+---
+title: 'The Protocol'
+description: 'Overview of the TRAIN protocol with all main components'
+icon: engine
+---
+
+<Frame>
+![preHTLC](/images/architecture.png)
+</Frame>
+
+The TRAIN protocol consists of **four** main components:
+
+<Card title="dApp/Integrator" icon="browser" horizontal="true" href="/protocol/dApp">
+  The Bridge UI/dApp or integration in a wallet, connected to auctions and discovery contracts. This dApp sends a request to the auction, gets the quote and selected Solver, and executes the atomic swap.
+</Card>
+
+<Card title="The Discovery Contract" icon="lighthouse" horizontal="true" href="/protocol/discovery">
+  This contract is used as a registry for discovering Solvers and Networks in the protocol. Any new Solver and network should be added here.
+</Card>
+
+<Card title="The Auction" icon="scale-balanced" horizontal="true" href="/protocol/auction">
+  This is a standard Dutch auction used by Solvers to compete for user requests.
+</Card>
+
+<Card title="PreHTLC Contracts" icon="file-lock" horizontal="true" href="/protocol/atomic-swaps-prehtlc">
+  These are the contracts responsible for ensuring secure asset exchange between the User and Solver on different chains.
+</Card>

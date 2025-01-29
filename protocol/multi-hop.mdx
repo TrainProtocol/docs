@@ -1,0 +1,17 @@
+---
+title: 'Multi-hop transactions'
+description: 'Explains how multiple Solvers can be used for connecting networks that do not have a direct liquidity connection'
+icon: arrows-turn-to-dots
+---
+
+By making atomic swaps practical for bridging, we gain a crucial advantage. The same hashlock can be reused across multiple networks (multi-Solver routing) for a single bridging request. Once the secret is revealed, all linked HTLCs/PreHTLCs in all networks can be unlocked.
+
+Let’s assume a user wants to transfer assets from Chain A to Chain C, but no single Solver supports both chains. Instead, there are two Solvers, one supporting transfers from Chain A to Chain B: Solver(AB) and another from Chain B to Chain C: Solver(BC).
+
+*The protocol facilitates this request as follows:*
+
+import MultihopSteps from '/snippets/multihop-steps.mdx';
+
+<MultihopSteps></MultihopSteps>
+
+Multi-hop transactions can use two Solvers to move funds to the user’s desired destination autonomously. This process can be expanded to include any number of Solvers, allowing for multiple “hops” to reach the final destination. Meanwhile, the user still only needs to complete two transactions on the source chain, regardless of the number of hops.
