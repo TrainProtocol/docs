@@ -42,7 +42,7 @@
   ],
   "topbarCtaButton": {
     "name": "Try TRAIN",
-    "url": "https://train.tech/app"
+    "url": "https://app.train.tech"
   },
   "tabs": [
     {
@@ -150,7 +150,7 @@
         "title": "TRAIN Protocol",
         "links": [
           { "label": "Home", "url": "https://train.tech" },
-          { "label": "Bridge App", "url": "https://train.tech/app" },
+          { "label": "Bridge App", "url": "https://app.train.tech" },
           { "label": "Docs", "url": "https://train.tech/docs" }
         ]
       }
