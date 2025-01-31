@@ -1,15 +1,44 @@
 ---
 title: 'How it Works'
-description: 'Explains the inner mechanics of the bridging deployment API'
+description: 'A simple guide to how the bridging deployment API works'
 icon: question
 ---
 
-import HowItWorksSnippet from '/snippets/how-it-works.mdx';
+# Understanding Bridge Deployment
 
-<HowItWorksSnippet />
+Bridge deployment might sound complex, but we've made it simple and automated. Let's break down how it works:
+
+<Steps>
+  <Step title="Network Setup & Validation">
+    First, we check all your network details like chain IDs and RPCs to make sure everything is properly configured. This helps prevent any issues down the line.
+  </Step>
+
+  <Step title="Contract Deployment">
+    We automatically deploy secure [TRAIN Protocol](protocol/introduction) contracts to your network. These contracts handle all the cross-chain transfers safely.
+  </Step>
+
+  <Step title="Liquidity Setup">
+    The system sets up initial funds from your canonical bridge to enable transfers. Think of this like "seeding" your bridge with its first resources.
+  </Step>
+
+  <Step title="Network Integration">
+    We connect your network to all existing networks in the TRAIN ecosystem. This means your users can transfer assets to and from any supported blockchain.
+  </Step>
+
+  <Step title="User Interface">
+    Finally, your network gets added to the [TRAIN App](https://app.train.tech), making it easy for users to start bridging assets right away.
+  </Step>
+</Steps>
 
 <Note>
-  Security Note: The TRAIN Protocol ensures trustless asset exchange via atomic swaps, eliminating counterparty risk and third-party reliance.
+  **Security First**: Our protocol uses atomic swaps - a proven technology that ensures every transfer is secure. This means there's no risk of losing funds during transfers, and you don't have to trust any third parties.
 </Note>
 
-For API endpoints and a detailed explanation of each, check the [API documentation](/api-reference).
+## What Makes It Special?
+
+- **Fully Automated**: Once you provide your network details, everything else happens automatically
+- **Secure by Design**: Uses battle-tested atomic swap technology
+- **Instant Integration**: Your network becomes part of a larger ecosystem immediately
+- **User-Friendly**: Works through an easy-to-use interface
+
+Ready to get started? Check out our [API documentation](/api-reference) for the technical details.

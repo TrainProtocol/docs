@@ -1,19 +1,46 @@
 ---
-title: 'Cross-Chain Swap'
-description: 'Explains how the protocol can be used for cross-chain swaps'
+title: 'Making a Cross-Chain Swap'
+description: 'A beginner-friendly guide to swapping assets between different blockchains'
 icon: swap
 ---
 
+# How to Swap Assets Between Chains
+
+Want to move your assets from one blockchain to another? Here's how the TRAIN Protocol makes it easy and secure.
+
 <Steps>
-  <Step title="Discovery">
-    Read the on-chain [Discovery](/protocol/discovery) contract to retrieve protocol metadata: active Solvers, networks, and routes.
+  <Step title="Find Available Routes">
+    First, the system checks the [Discovery](/protocol/discovery) contract - think of it as a directory that shows you:
+    - Which networks you can send assets to
+    - Which Solvers (special services that help move your assets) are available
+    - What routes you can use between different chains
   </Step>
-  <Step title="Auction / Solver Selection">
-    Send an order to the [Auction](/protocol/auction) to find the best Solver/price for the given source and destination.
+
+  <Step title="Get the Best Price">
+    Once you know where you can send your assets, the system:
+    - Sends your request to the [Auction](/protocol/auction) marketplace
+    - Collects offers from available Solvers
+    - Finds you the best price for your transfer
   </Step>
-  <Step title="User and Solver Atomic Swap">
-    Perform an atomic swap using [PreHTLCs](protocol/atomic-swaps-prehtlc).
+
+  <Step title="Complete the Secure Transfer">
+    With the route and price confirmed, the system:
+    - Uses [PreHTLCs](/protocol/atomic-swaps-prehtlc) (special smart contracts) to ensure your transfer is secure
+    - Locks your assets safely during the transfer process
+    - Only completes the swap when both sides of the transaction are guaranteed
   </Step>
 </Steps>
 
-The TRAIN Protocol makes bridging **completely transparent and fully controllable** by the client. The integrator has complete control over every aspect, from selecting and ranking Solvers independently to performing final verification, ensuring the entire process is **trustless, transparent, and under their control**. The detailed implementation steps can be found in the [dApp Implementation](/protocol-spec/implementation-dApp) spec.
+## Why Choose TRAIN for Your Swaps?
+
+TRAIN makes moving assets between blockchains:
+
+- **Safe**: You're always in control of your assets
+- **Transparent**: You can see exactly what's happening at each step
+- **Reliable**: No middle-men or custodians holding your funds
+
+To see exactly how the transfer works behind the scenes, check out the technical details in our [dApp Implementation](/protocol-spec/implementation-dApp) guide.
+
+<Note>
+Your assets are protected throughout the entire process. If anything goes wrong, you can always get your assets back - the system is designed to prevent any permanent loss of funds.
+</Note>

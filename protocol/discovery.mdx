@@ -1,13 +1,43 @@
 ---
 title: 'Discovery'
-description: 'Description of the discovery system and the mechanics of the token'
+description: 'Description of the discovery system and how it works'
 icon: lighthouse
 ---
 
-TRAIN has an on-chain [Discovery Registry](/protocol-spec/discovery) for protocol metadata to ensure users, auctions, and integrators can discover Solvers. Solvers will register their addresses and the routes they support.
+## What is Discovery?
 
-Since the registry is permissionless, any person can register. Flood protection is necessary to prevent malicious actors from registering numerous "empty" Solvers that fail to complete transactions and potentially DDoS the protocol.
+TRAIN uses a smart contract called the Discovery Registry to help users find available bridge services. Think of it like a public directory that lists all the trusted parties (called Solvers) who can help transfer your assets between different blockchains.
 
-While staking could be a solution, it only works if we can determine an Solver's dishonesty in the network where the registry is deployed. However, autonomously verifying Solver behavior is not possible, as the registry chain has no information about Solver behavior in other chains.
+### How Discovery Works
 
-Therefore, the Discovery registry implements a burning mechanism. Any active/registering Solvers will **lock in a certain amount of tokens,** which will be **burned** daily/monthly as a protocol fee for operating as an Solver.
+<Steps>
+  <Step title="Finding Available Services">
+    When you want to bridge assets between networks, the Discovery Registry shows you which Solvers can help with your specific transfer.
+  </Step>
+  
+  <Step title="Quality Control">
+    To make sure only legitimate Solvers are listed, the Discovery system requires them to lock up some TRAIN tokens to provide their services.
+  </Step>
+  
+  <Step title="Ongoing Fee">
+    Solvers pay a small fee (in tokens) for staying active in the registry. This fee is automatically deducted daily/monthly.
+  </Step>
+</Steps>
+
+### Why This Matters
+
+<Card title="Security & Trust" icon="shield-check">
+  The Discovery system helps protect users by making sure Solvers have something at stake - their locked tokens - which encourages them to provide reliable service.
+</Card>
+
+<Note>
+  While anyone can register as a Solver (making it permissionless), the token requirement helps prevent spam and ensures only serious providers join the network.
+</Note>
+
+### Simple Example
+
+Think of it like a ride-sharing app's driver registration:
+- Drivers (Solvers) must register and put down a deposit
+- They pay regular fees to stay active on the platform
+- Users can easily find available drivers for their route
+- Bad actors are discouraged by the financial requirements

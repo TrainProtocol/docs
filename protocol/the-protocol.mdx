@@ -1,27 +1,38 @@
 ---
 title: 'The Protocol'
-description: 'Overview of the TRAIN protocol with all main components'
+description: 'A simple guide to understanding how TRAIN works'
 icon: engine
 ---
 
-<Frame>
-![preHTLC](/images/architecture.png)
+<Frame caption="How TRAIN's components work together">
+![TRAIN Protocol Architecture](/images/architecture.png)
 </Frame>
 
-The TRAIN protocol consists of **four** main components:
+The TRAIN protocol makes cross-chain transactions simple and secure by connecting four essential parts that work together. Think of it like a well-organized delivery system, where each part has a specific job to make sure your assets move safely between different blockchains.
 
-<Card title="dApp/Integrator" icon="browser" horizontal="true" href="/protocol/dApp">
-  The Bridge UI/dApp or integration in a wallet, connected to auctions and discovery contracts. This dApp sends a request to the auction, gets the quote and selected Solver, and executes the atomic swap.
+Here's what each part does:
+
+<Card title="Bridge Interface (dApp)" icon="browser" horizontal="true" href="/protocol/dApp">
+  This is what you'll actually use - like a website or wallet app. It's designed to make bridging assets as easy as sending an email. The interface helps you find the best rates and ensures your transaction is secure.
 </Card>
 
-<Card title="The Discovery Contract" icon="lighthouse" horizontal="true" href="/protocol/discovery">
-  This contract is used as a registry for discovering Solvers and Networks in the protocol. Any new Solver and network should be added here.
+<Card title="Network Directory (Discovery)" icon="lighthouse" horizontal="true" href="/protocol/discovery">
+  Think of this as a phone book for the protocol. It keeps track of all available networks and Solvers (the parties who help move your assets). This ensures you can always find someone to help with your transaction.
 </Card>
 
-<Card title="The Auction" icon="scale-balanced" horizontal="true" href="/protocol/auction">
-  This is a standard Dutch auction used by Solvers to compete for user requests.
+<Card title="Price Finding (Auction)" icon="scale-balanced" horizontal="true" href="/protocol/auction">
+  This is where Solvers compete to offer you the best price for moving your assets. It works like an auction house, but in reverse - Solvers bid to offer you the lowest fees possible.
 </Card>
 
-<Card title="PreHTLC Contracts" icon="file-lock" horizontal="true" href="/protocol/atomic-swaps-prehtlc">
-  These are the contracts responsible for ensuring secure asset exchange between the User and Solver on different chains.
+<Card title="Security Contracts (PreHTLC)" icon="file-lock" horizontal="true" href="/protocol/atomic-swaps-prehtlc">
+  These are special smart contracts that act like a secure lockbox for your assets. They ensure that your assets are either successfully moved to the new network or safely returned to you - there's no middle ground where they could get lost.
 </Card>
+
+### Why This Matters
+
+This structure has three main benefits for you:
+1. **Safety First**: Your assets are always protected by smart contracts, not people
+2. **Best Prices**: The auction system ensures you get competitive rates
+3. **Reliability**: Multiple Solvers and networks mean you're never stuck waiting
+
+Think of TRAIN like a highly secure, automated postal service for your digital assets. Each component plays a crucial role in ensuring your "package" (your assets) reaches its destination safely and efficiently.

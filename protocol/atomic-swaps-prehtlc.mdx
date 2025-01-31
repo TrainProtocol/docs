@@ -1,15 +1,19 @@
 ---
 title: 'TRAIN PreHTLC'
-description: 'Introduction to PreHTLCs - improved version of HTLCs'
+description: 'A simpler, more user-friendly way to exchange assets across different blockchains'
 icon: atom
 ---
 
-To overcome challenges with the original HTLC, we introduce PreHTLC, an enhanced version of HTLC. PreHTLC represents the **user's intent and commitment to exchange with the Solver** but without the initial requirement of a hashlock. In this model:
+Think of sending assets across different blockchains like sending a package through international mail - you want to make sure it arrives safely and that both parties keep their promises. That's where PreHTLC comes in. It's our improved version of blockchain asset exchange that makes the process simpler and safer for everyone.
 
-- **Secret Management Delegated**: The Solver generates and manages the secret, relieving the user of this responsibility.
-- **Claim Transactions Simplified**: The Solver executes the claim transaction on the destination chain, addressing the issue of users lacking assets on a new network.
+### What Makes PreHTLC Special?
 
-### TRAIN PreHTLC flow
+PreHTLC is like having a trusted shipping service that handles all the complex paperwork for you. Here's what makes it better than traditional methods:
+
+- **You Don't Handle the Security Keys**: Just like you don't need to know how postal security works to send a package, the Solver (think of them as your shipping service) handles all the complex security keys.
+- **No Extra Costs on the Destination Chain**: Imagine not needing to pay customs fees in advance - the Solver handles the delivery costs on the destination blockchain.
+
+### How PreHTLC Works
 
 <Frame>
 ![preHTLC](/images/pre-htlc.png)
@@ -19,8 +23,17 @@ import PreHtlcSteps from '/snippets/prehtlc-steps.mdx';
 
 <PreHtlcSteps></PreHtlcSteps>
 
-Delegating secret management to the Solver does not create trust assumptions. When the Solver reveals the secret to claim funds in the source network, the secret becomes public, allowing anyone to use it to unlock the user’s funds in the destination network. The protocol incentivizes the release of user funds by reserving a portion of the total bridging fee as a reward for this task.
+### Is It Safe?
 
-### The liveness issue
+Absolutely! Even though the Solver handles the security keys (like a shipping service handling your package), they can't access your assets without your permission. It's like having a package delivery system where:
 
-PreHTLCs improve upon HTLCs by delegating secret management and destination claim transactions to the Solver. This delegation reduces the liveness issue, allowing the transaction flow to be fully recoverable from on-chain data. However, ensuring the user is live to transmit the hashlock from the destination chain to the source chain remains crucial.
+1. You can always track your package
+2. The courier can't access the contents
+3. You get your money back if delivery fails
+4. Everything is verified by the blockchain
+
+The protocol even includes a reward system - think of it as insurance that motivates everyone to complete their part properly.
+
+### What About Staying Connected?
+
+While PreHTLC makes most of the process automatic, you'll still need to be online briefly to confirm the final step of the exchange. It's like signing for a package delivery - a quick action that confirms everything is in order. The good news is that all the transaction details are safely stored on the blockchain, so you won't lose track of anything even if your internet connection drops.

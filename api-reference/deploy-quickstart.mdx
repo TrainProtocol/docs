@@ -1,55 +1,92 @@
 ---
 title: 'Quickstart'
-description: 'Follow the instructions below to learn how to autonomously deploy a trustless bridge on any rollup/chain'
+description: 'Deploy a trustless bridge between any two blockchains in just a few steps'
 icon: rocket-launch
 ---
 
-#### 1) Get API Keys
-The TRAIN Bridge Deployment API is currently in early access. To request your API keys, please fill out [this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw).
+Welcome to the TRAIN Bridge Deployment API quickstart guide! This guide will walk you through deploying your own trustless bridge between blockchains. Let's get started!
 
-#### 2) Call the Deploy Bridge Endpoint
-Here is an example for deploying a bridge on the OP Stack rollup:
+### Prerequisites
+- Basic understanding of blockchain concepts
+- Access to your network's RPC endpoints
+- Your network's chain ID and contract addresses
 
-```bash
-curl --request POST \
-  --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment \
-  --header 'Content-Type: application/json' \
-  --header 'X-V8-APIKEY: <api-key>' \
-  --data '{
-  "chain_id": 45646545646,
-  "network_name": "YourNetwork_TESTNET",
-  "network_display_name": "Your Network Testnet",
-  "logo_url": "<url to logo>",
-  "network_group": "EVM_OPTIMISM_EIP1559",
-  "is_testnet": true,
-  "canonical_bridge_address": "0x1200000000000000000000000000000000000000",
-  "gas_price_oracle": "0x420000000000000000000000000000000000000F",
-  "native_asset_symbol": "ETH",
-  "native_asset_decimals": 18,
-  "public_rpc": "https://ethereum.publicnode.com",
-  "private_rpc": "https://ethereum.publicnode.com",
-  "address_lookup_explorer_template": "https://etherscan.io/address/{0}",
-  "tx_lookup_explorer_template": "https://etherscan.io/tx/{0}"
-}'
-```
+<Steps>
+  <Step title="Get Your API Keys">
+    <Info>
+      The TRAIN Bridge Deployment API is currently in early access. Request your API keys by completing [this form](https://ix9g7fdi92w.typeform.com/to/EFRPexAw).
+    </Info>
+  </Step>
 
-For more endpoints and a detailed explanation of each, check the [API Reference](/api-reference).
+  <Step title="Prepare Your Network Information">
+    Before deploying, you'll need to gather some key information about your network:
+    - Chain ID (a unique identifier for your blockchain)
+    - Network name and display name
+    - Logo URL
+    - Network type (e.g., EVM_OPTIMISM_EIP1559 for OP Stack rollups)
+    - Bridge and oracle contract addresses
+    - RPC endpoints (both public and private)
+    - Block explorer URLs
 
-#### 3) Check Deployment Status
-To monitor the deployment process, periodically call the Deployment Status endpoint:
+    <Tip>
+      Not sure about some values? Check our [Network Configuration Guide](/api-reference) for detailed explanations.
+    </Tip>
+  </Step>
 
-```bash
-curl --request GET \
-  --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment/{deploymentId} \
-  --header 'X-V8-APIKEY: <api-key>'
-```
+  <Step title="Deploy Your Bridge">
+    Use the Deploy Bridge API endpoint to start your deployment. Here's a complete example using curl:
 
-Continue polling until the response status is `Completed`.
+    ```bash
+    curl --request POST \
+      --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment \
+      --header 'Content-Type: application/json' \
+      --header 'X-V8-APIKEY: <api-key>' \
+      --data '{
+      "chain_id": 45646545646,
+      "network_name": "YourNetwork_TESTNET",
+      "network_display_name": "Your Network Testnet",
+      "logo_url": "<url to logo>",
+      "network_group": "EVM_OPTIMISM_EIP1559",
+      "is_testnet": true,
+      "canonical_bridge_address": "0x1200000000000000000000000000000000000000",
+      "gas_price_oracle": "0x420000000000000000000000000000000000000F",
+      "native_asset_symbol": "ETH",
+      "native_asset_decimals": 18,
+      "public_rpc": "https://ethereum.publicnode.com",
+      "private_rpc": "https://ethereum.publicnode.com",
+      "address_lookup_explorer_template": "https://etherscan.io/address/{0}",
+      "tx_lookup_explorer_template": "https://etherscan.io/tx/{0}"
+    }'
+    ```
 
-#### 4) Access Your Network for Bridging
-Once the deployment is complete, your bridge will be available for access. Visit [TRAIN App](https://app.train.tech) to start bridging.
+    <Note>
+      Replace the placeholder values with your actual network information. The API will return a deployment ID that you'll use to check the status.
+    </Note>
+  </Step>
 
-import OpRequest from '/snippets/op-request.mdx';
+  <Step title="Monitor Deployment Progress">
+    After initiating deployment, you can check its status using the Deployment Status endpoint:
+
+    ```bash
+    curl --request GET \
+      --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment/{deploymentId} \
+      --header 'X-V8-APIKEY: <api-key>'
+    ```
+
+    <Tip>
+      Keep polling this endpoint until you see the status change to `Completed`. This usually takes a few minutes.
+    </Tip>
+  </Step>
+
+  <Step title="Start Using Your Bridge">
+    Once deployment is complete, your network is ready for bridging! Visit the [TRAIN App](https://app.train.tech) to:
+    - View your network in the list of supported chains
+    - Start bridging assets to and from your network
+    - Monitor bridge transactions
+  </Step>
+</Steps>
+
+### Example Request and Response
 
 <RequestExample>
 <OpRequest />
@@ -63,3 +100,8 @@ import OpRequest from '/snippets/op-request.mdx';
 }
 ```
 </ResponseExample>
+
+### Need Help?
+- Check our detailed [API Reference](/api-reference) for more information
+- Join our [Discord](https://discord.gg/train) for support
+- Read the [How It Works](/api-reference/deploy-how-it-works) guide for deeper technical understanding
