@@ -4,10 +4,23 @@ description: 'Description of the discovery system and the mechanics of the token
 icon: lighthouse
 ---
 
-TRAIN has an on-chain [Discovery Registry](/protocol-spec/discovery) for protocol metadata to ensure users, auctions, and integrators can discover Solvers. Solvers will register their addresses and the routes they support.
+The TRAIN protocol maintains an on-chain Discovery Registry for protocol metadata, ensuring users, auctions, and integrators can discover Solvers efficiently. Through this registry, Solvers register both their addresses and the routes they support.
 
-Since the registry is permissionless, any person can register. Flood protection is necessary to prevent malicious actors from registering numerous "empty" Solvers that fail to complete transactions and potentially DDoS the protocol.
+### Registration Security
 
-While staking could be a solution, it only works if we can determine an Solver's dishonesty in the network where the registry is deployed. However, autonomously verifying Solver behavior is not possible, as the registry chain has no information about Solver behavior in other chains.
+The Discovery Registry is permissionless, allowing any entity to register as a Solver. This open nature necessitates flood protection to prevent malicious actors from:
+- Registering numerous non-functional ("empty") Solvers
+- Potentially executing DDoS attacks on the protocol
 
-Therefore, the Discovery registry implements a burning mechanism. Any active/registering Solvers will **lock in a certain amount of tokens,** which will be **burned** daily/monthly as a protocol fee for operating as an Solver.
+### Protection Mechanism
+
+While staking might seem like a viable solution for security, it presents limitations. Staking only works effectively if the network where the Discovery Registry is deployed can determine a Solver's dishonesty. However, autonomous verification of Solver behavior across chains is not possible, as the registry chain cannot access information about Solver behavior in other networks.
+
+### Token Burning Solution
+
+To address these security challenges, the Discovery Registry implements a token burning mechanism:
+- Active and registering Solvers must lock a specified amount of tokens
+- These locked tokens are systematically burned (daily/monthly) as a protocol fee
+- The burning serves as an ongoing cost for operating as a Solver
+
+This approach ensures that maintaining malicious Solver registrations becomes economically unfeasible while providing a sustainable model for legitimate Solver operations.

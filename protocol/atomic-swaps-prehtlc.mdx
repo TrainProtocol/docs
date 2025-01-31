@@ -4,23 +4,23 @@ description: 'Introduction to PreHTLCs - improved version of HTLCs'
 icon: atom
 ---
 
-To overcome challenges with the original HTLC, we introduce PreHTLC, an enhanced version of HTLC. PreHTLC represents the **user's intent and commitment to exchange with the Solver** but without the initial requirement of a hashlock. In this model:
+To overcome challenges with the original HTLC, we introduce PreHTLC, an enhanced version of HTLC. The PreHTLC represents the **user's intent and commitment to exchange with the Solver** but without the initial requirement of a hashlock. In this model:
 
 - **Secret Management Delegated**: The Solver generates and manages the secret, relieving the user of this responsibility.
 - **Claim Transactions Simplified**: The Solver executes the claim transaction on the destination chain, addressing the issue of users lacking assets on a new network.
 
-### TRAIN PreHTLC flow
+### TRAIN PreHTLC Flow
 
 <Frame>
-![preHTLC](/images/pre-htlc.png)
+![PreHTLC](/images/pre-htlc.png)
 </Frame>
 
 import PreHtlcSteps from '/snippets/prehtlc-steps.mdx';
 
 <PreHtlcSteps></PreHtlcSteps>
 
-Delegating secret management to the Solver does not create trust assumptions. When the Solver reveals the secret to claim funds in the source network, the secret becomes public, allowing anyone to use it to unlock the user’s funds in the destination network. The protocol incentivizes the release of user funds by reserving a portion of the total bridging fee as a reward for this task.
+Delegating secret management to the Solver does not create trust assumptions. When the Solver reveals the secret to claim funds in the source network, the secret becomes public. This allows anyone to use it to unlock the user's funds in the destination network. The protocol incentivizes the release of user funds by reserving a portion of the total bridging fee as a reward for this task.
 
-### The liveness issue
+### The Liveness Issue
 
-PreHTLCs improve upon HTLCs by delegating secret management and destination claim transactions to the Solver. This delegation reduces the liveness issue, allowing the transaction flow to be fully recoverable from on-chain data. However, ensuring the user is live to transmit the hashlock from the destination chain to the source chain remains crucial.
+PreHTLCs improve upon HTLCs by delegating secret management and destination claim transactions to the Solver. This delegation reduces the liveness issue by allowing the transaction flow to be fully recoverable from on-chain data. However, ensuring the user is live to transmit the hashlock from the destination chain to the source chain remains crucial.
