@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "TRAIN - Trustless Atomic Intents Protocol",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/logo.svg",
+    "light": "/logo/logo.svg"
   },
   "analytics": {
   },
@@ -12,15 +12,14 @@
   },
   "favicon": "/favicon.svg",
   "background": {
-    "style": "grid"
   },
   "colors": {
-    "primary": "#06626B",
-    "light": "#2C97A0",
-    "dark": "#06626B",
+    "primary": "#3CD0B7",
+    "light": "#3CD0B7",
+    "dark": "#3CD0B7",
     "anchors": {
-      "from": "#2C97A0",
-      "to": "#06626B"
+      "from": "#3CD0B7",
+      "to": "#3CD0B7"
     }
   },
   "sidebar": {
@@ -147,11 +146,17 @@
     },
     "links": [
       {
-        "title": "TRAIN Protocol",
+        "title": "Protocol",
         "links": [
           { "label": "Home", "url": "https://train.tech" },
           { "label": "Bridge App", "url": "https://app.train.tech" },
           { "label": "Docs", "url": "https://train.tech/docs" }
+        ]
+      },
+      {
+        "title": "Extra",
+        "links": [
+          { "label": "Brand Assets", "url": "https://train.tech" }
         ]
       }
     ]
