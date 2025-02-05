@@ -5,14 +5,12 @@
     "dark": "/logo/logo.svg",
     "light": "/logo/logo.svg"
   },
-  "analytics": {
-  },
+  "analytics": {},
   "feedback": {
     "thumbsRating": true
   },
   "favicon": "/favicon.svg",
-  "background": {
-  },
+  "background": {},
   "colors": {
     "primary": "#3CD0B7",
     "light": "#3CD0B7",
@@ -77,7 +75,8 @@
             "protocol/usage-add-new-network"
           ]
         },
-        "protocol/contracts"
+        "protocol/contracts",
+        "protocol/train-overview"
       ]
     },
     {
@@ -148,20 +147,31 @@
       {
         "title": "Protocol",
         "links": [
-          { "label": "Home", "url": "https://train.tech" },
-          { "label": "Bridge App", "url": "https://app.train.tech" },
-          { "label": "Docs", "url": "https://train.tech/docs" }
+          {
+            "label": "Home",
+            "url": "https://train.tech"
+          },
+          {
+            "label": "Bridge App",
+            "url": "https://app.train.tech"
+          },
+          {
+            "label": "Docs",
+            "url": "https://train.tech/docs"
+          }
         ]
       },
       {
         "title": "Extra",
         "links": [
-          { "label": "Brand Assets", "url": "https://train.tech" }
+          {
+            "label": "Brand Assets",
+            "url": "https://train.tech"
+          }
         ]
       }
     ]
-  }
-,
+  },
   "api": {
     "baseUrl": "https://atomic-dev.layerswap.cloud/"
   },
