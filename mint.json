@@ -14,13 +14,7 @@
   "background": {
   },
   "colors": {
-    "primary": "#3CD0B7",
-    "light": "#3CD0B7",
-    "dark": "#3CD0B7",
-    "anchors": {
-      "from": "#3CD0B7",
-      "to": "#3CD0B7"
-    }
+    "primary": "#278EF6"
   },
   "sidebar": {
     "items": "border"
