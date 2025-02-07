@@ -1,0 +1,165 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "TRAIN - Trustless Atomic Intents Protocol",
+  "colors": {
+    "primary": "#278EF6",
+    "dark": "#278EF6",
+    "light": "#278EF6"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "TRAIN Protocol",
+            "pages": [
+              "protocol/introduction",
+              "protocol/security",
+              {
+                "group": "Using the Protocol",
+                "icon": "chart-network",
+                "pages": [
+                  "protocol/usage-swap",
+                  "protocol/usage-add-new-network"
+                ]
+              },
+              "protocol/contracts"
+            ]
+          },
+          {
+            "group": "Protocol Concepts",
+            "pages": [
+              "protocol/the-protocol",
+              {
+                "group": "Atomic Swaps",
+                "icon": "swap",
+                "pages": [
+                  "protocol/atomic-swaps-overview",
+                  "protocol/atomic-swaps-prehtlc"
+                ]
+              },
+              "protocol/multi-hop",
+              "protocol/slashing",
+              "protocol/discovery",
+              "protocol/auction",
+              "protocol/dApp"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Specification",
+        "groups": [
+          {
+            "group": "Protocol Spec",
+            "pages": [
+              "protocol-spec/model",
+              "protocol-spec/edge-cases",
+              "protocol-spec/core",
+              "protocol-spec/reward-slashing",
+              "protocol-spec/discovery",
+              "protocol-spec/auction",
+              {
+                "group": "Implementation",
+                "icon": "chart-network",
+                "pages": [
+                  "protocol-spec/implementation-dApp",
+                  "protocol-spec/implementation-solver"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/logo.svg",
+    "dark": "/logo/logo.svg"
+  },
+  "api": {
+    "mdx": {
+      "server": "https://atomic-dev.layerswap.cloud/"
+    }
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
+  "background": {},
+  "navbar": {
+    "links": [
+      {
+        "label": "Dev Community",
+        "href": "https://t.me/trainprotocol"
+      },
+      {
+        "label": "Github",
+        "href": "https://github.com/trainprotocol"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Try TRAIN",
+      "href": "https://app.train.tech"
+    }
+  },
+  "seo": {
+    "metatags": {
+      "og:title": "TRAIN Protocol",
+      "og:description": "TRAIN is an intent-based, trustless, permissionless cross-chain bridging (swapping) protocol",
+      "og:logo": "/logo/dark.svg"
+    },
+    "indexing": "navigable"
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/trainprotocol",
+      "github": "https://github.com/trainprotocol",
+      "telegram": "https://t.me/trainprotocol"
+    },
+    "links": [
+      {
+        "header": "Protocol",
+        "items": [
+          {
+            "label": "Home",
+            "href": "https://train.tech"
+          },
+          {
+            "label": "Bridge App",
+            "href": "https://app.train.tech"
+          },
+          {
+            "label": "Docs",
+            "href": "https://docs.train.tech"
+          }
+        ]
+      },
+      {
+        "header": "Extra",
+        "items": [
+          {
+            "label": "Brand Assets",
+            "href": "https://train.tech"
+          }
+        ]
+      }
+    ]
+  },
+  "integrations": {}
+}
