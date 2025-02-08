@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "TRAIN - Trustless Atomic Intents Protocol",
+  "name": "TRAIN Docs",
   "colors": {
     "primary": "#278EF6",
     "dark": "#278EF6",
@@ -120,7 +120,7 @@
   },
   "seo": {
     "metatags": {
-      "og:title": "TRAIN Protocol",
+      "og:title": "TRAIN Protocol Docs",
       "og:description": "TRAIN is an intent-based, trustless, permissionless cross-chain bridging (swapping) protocol",
       "og:logo": "/logo/dark.svg"
     },
