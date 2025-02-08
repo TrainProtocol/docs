@@ -1,11 +1,11 @@
 ---
 title: 'Edge Cases'
 description: 'Describes potential failure scenarios and how the protocol handles them to ensure fund safety and transaction integrity'
-icon: light-emergency
+icon: 'light-emergency'
 ---
 
-### Solver fails to act on the User's commitment/intent
-In a rare scenario where the winning Solver fails to act on the user's commitment, other auction participants have a chance to lock instead of the winner. Even if they fail to do so, the user just has to wait for the timelock (usually ~15 minutes) and receive their funds back.
+### Solver Fails to Act on the User's Commitment/Intent
+In a rare scenario where the winning Solver fails to act on the User's commitment, other auction participants have a chance to lock instead of the winner. If all participants fail to act, the User only needs to wait for the timelock period (usually ~15 minutes) to receive their funds back.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
@@ -26,9 +26,9 @@ sequenceDiagram
 ```
 </Accordion>
 
-### User fails to act on the Solver's lock
+### User Fails to Act on the Solver's Lock
 
-If the user does not act on the lock created by the Solver, after the timelock passes, both the Solver and the user can refund their funds.
+If the User does not act on the lock created by the Solver, both parties can refund their funds after the timelock period expires.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
@@ -56,9 +56,9 @@ sequenceDiagram
 
 </Accordion>
 
-### Solver fails to release the User's funds
+### Solver Fails to Release the User's Funds
 
-In the scenario where the Solver releases their funds but fails to release the user's funds, the user can capture the secret used to release the Solver's funds and manually release their own funds on the destination chain.
+In scenarios where the Solver releases their funds but fails to release the User's funds, the User can capture the secret used to release the Solver's funds. The User can then use this secret to manually release their own funds on the destination chain.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
@@ -83,9 +83,9 @@ sequenceDiagram
 ```
 </Accordion>
 
-### Solver fails to release any funds
+### Solver Fails to Release Any Funds
 
-If, for any reason, the Solver fails to release the funds at all, the user can simply wait for the timelock to pass and refund their funds back.
+If the Solver fails to release any funds, the User can wait for the timelock period to expire and then refund their funds.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
@@ -112,6 +112,3 @@ sequenceDiagram
 ```
 
 </Accordion>
-
-
-

@@ -23,10 +23,13 @@
                 "icon": "chart-network",
                 "pages": [
                   "protocol/usage-swap",
-                  "protocol/usage-add-new-network"
+                  "protocol/usage-add-new-network",
+                  "protocol/introduction"
                 ]
               },
-              "protocol/contracts"
+              "protocol/contracts",
+              "protocol/security",
+              "protocol/dApp"
             ]
           },
           {
@@ -69,7 +72,9 @@
                   "protocol-spec/implementation-dApp",
                   "protocol-spec/implementation-solver"
                 ]
-              }
+              },
+              "protocol-spec/edge-cases",
+              "protocol-spec/discovery"
             ]
           }
         ]

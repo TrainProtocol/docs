@@ -14,12 +14,13 @@ The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface 
 
 The dApp has **three** main responsibilities:
 
-- Connect to the [Discovery registry](/protocol/discovery) and fetch available Solvers/networks.
-- Connect to the [Auction](/protocol/auction) to transmit the user's intent and get quotes from Solvers.
-- Execute an [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow.
+- Connecting to the [Discovery registry](/protocol/discovery) and fetching available Solvers/networks.
+- Connecting to the [Auction](/protocol/auction) to transmit the user's intent and get quotes from Solvers.
+- Executing an [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow.
 
-### Observing the destination network
+### Observing the Destination Network
 
 The dApp must observe the destination lock created by the Solver and provide the `hashlock` to the user to complete the atomic swap process. Observing this transaction can be done in the following ways, in order of priority:
+
 1. Bootstrap a Light Client (e.g., [Helios](https://github.com/a16z/helios)) for the destination chain and read the lock state from it.
 2. If there is no Light Client available, read and verify the lock state from multiple RPC providers.
