@@ -4,15 +4,69 @@ description: 'Describes potential failure scenarios and how the protocol handles
 icon: light-emergency
 ---
 
-<AccordionGroup>
+### Solver fails to act on the User's commitment/intent
+In a rare scenario where the winning Solver fails to act on the user's commitment, other auction participants have a chance to lock instead of the winner. Even if they fail to do so, the user just has to wait for the timelock (usually ~15 minutes) and receive their funds back.
 
-<Accordion title="Party 2 fails to release Party 1’s funds" icon="brake-warning">
+<Accordion title="Sequence Diagram" icon="brake-warning">
 
 ```mermaid
 sequenceDiagram
-    participant P1 as Party 1
+    participant P1 as User
     participant SC as Source Chain
-    participant P2 as Party 2
+    participant P2 as Solver
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    
+    Note over P1,SC: Timelock passes
+    P1->>SC: refund()
+    SC-->>P1: TokenRefunded
+```
+</Accordion>
+
+### User fails to act on the Solver's lock
+
+If the user does not act on the lock created by the Solver, after the timelock passes, both the Solver and the user can refund their funds.
+
+<Accordion title="Sequence Diagram" icon="brake-warning">
+
+```mermaid
+sequenceDiagram
+    participant P1 as User
+    participant SC as Source Chain
+    participant P2 as Solver
+    participant DC as Destination Chain
+
+	
+    P1->>SC: commit()
+    SC-->>P2: TokenCommitted
+    P2->>DC: lock()
+    DC-->>P2: TokenLocked
+    
+    Note over P1,SC: Timelock passes
+    P1->>SC: refund()
+    SC-->>P1: TokenRefunded
+		
+		Note over P2,DC: Timelock passes
+    P2->>DC: refund()
+    DC-->>P2: TokenRefunded
+```
+
+</Accordion>
+
+### Solver fails to release the User's funds
+
+In the scenario where the Solver releases their funds but fails to release the user's funds, the user can capture the secret used to release the Solver's funds and manually release their own funds on the destination chain.
+
+<Accordion title="Sequence Diagram" icon="brake-warning">
+
+```mermaid
+sequenceDiagram
+    participant P1 as User
+    participant SC as Source Chain
+    participant P2 as Solver
     participant DC as Destination Chain
 
 	
@@ -29,14 +83,17 @@ sequenceDiagram
 ```
 </Accordion>
 
+### Solver fails to release any funds
 
-<Accordion title="Party 2 fails to release at all" icon="brake-warning">
+If, for any reason, the Solver fails to release the funds at all, the user can simply wait for the timelock to pass and refund their funds back.
+
+<Accordion title="Sequence Diagram" icon="brake-warning">
 
 ```mermaid
 sequenceDiagram
-    participant P1 as Party 1
+    participant P1 as User
     participant SC as Source Chain
-    participant P2 as Party 2
+    participant P2 as Solver
     participant DC as Destination Chain
 
 	
@@ -56,46 +113,5 @@ sequenceDiagram
 
 </Accordion>
 
-<Accordion title="Party 1 fails to add lock to the commitment" icon="brake-warning">
 
-```mermaid
-sequenceDiagram
-    participant P1 as Party 1
-    participant SC as Source Chain
-    participant P2 as Party 2
-    participant DC as Destination Chain
 
-	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>DC: lock()
-    DC-->>P2: TokenLocked
-    
-    Note over P1,SC: Timelock passes
-    P1->>SC: refund()
-    SC-->>P1: TokenRefunded
-		
-		Note over P2,DC: Timelock passes
-    P2->>DC: refund()
-    DC-->>P2: TokenRefunded
-```
-
-### Party 2 fails to act on commitment
-
-```mermaid
-sequenceDiagram
-    participant P1 as Party 1
-    participant SC as Source Chain
-    participant P2 as Party 2
-    participant DC as Destination Chain
-
-	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    
-    Note over P1,SC: Timelock passes
-    P1->>SC: refund()
-    SC-->>P1: TokenRefunded
-```
-</Accordion>
-</AccordionGroup>
