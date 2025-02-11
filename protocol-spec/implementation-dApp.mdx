@@ -25,21 +25,21 @@ icon: browser
 </Steps>
 
 <Warning>
-[Edge Case: Party 2 fails to act on commitment](/protocol-spec/edge-cases)
+[Edge Case: Solver Fails to Act on the User’s Commitment/Intent](/protocol-spec/edge-cases#solver-fails-to-act-on-the-users-commitment-intent)
 
 - Wait for the `timelock` to expire.
 - Call `refund()` on the source chain to reclaim your funds.
 </Warning>
 
 <Warning>
-[Edge Case: Party 2 fails to release at all](/protocol-spec/edge-cases)
+[Edge Case: Solver Fails to Release Any Funds](/protocol-spec/edge-cases#solver-fails-to-release-any-funds)
 
 - Wait for the `timelock` to expire.
 - Call `refund()` on the source chain to reclaim your funds.
 </Warning>
 
 <Warning>
-[Edge Case: Party 2 fails to release Party 1’s funds](/protocol-spec/edge-cases)
+[Edge Case: Solver Fails to Release the User’s Funds](/protocol-spec/edge-cases#solver-fails-to-release-the-users-funds)
 
 - If funds are not released on the destination chain, watch the source chain for the `TokenRedeemed` event (or `getDetails()` function).
 - Once detected, capture the `secret` and call `redeem()` on the destination chain.
