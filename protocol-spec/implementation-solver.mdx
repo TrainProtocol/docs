@@ -16,6 +16,7 @@ icon: network-wired
     - Monitor the source chain for the `TokenLockAdded` event (or `getDetails()` function) on the existing commitment.
     - Once detected, verify that the `hashlock` matches the one you previously generated.
     - Verify that the `timelock` provides sufficient time to act, ensuring it is at least [$T + \Delta$](/protocol-spec/model/#standard-flow).
+    - Verify that the `Id` is equal to the original commitment Id in the `TokenCommitted` event.
   </Step>
   <Step title="(signature flow) hashlock addition on behalf of the user" stepNumber="3*">
     Call the `addLockSig()` function, providing both the user's `signature` and the message data (`Id`, `hashlock`, `timelock`).
