@@ -1,26 +1,23 @@
 ---
 title: 'Introduction'
-description: 'A trustless, permissionless cross-chain swapping (bridging) solution.'
+description: 'A trustless, permissionless cross-chain bridging (swapping) solution.'
 icon: rocket
 ---
 
 The **TRAIN** [**TR**ustless **A**tomic **IN**tents] protocol is a peer-to-peer system for bridging/swapping crypto assets from one blockchain network to another. The protocol is implemented as a set of persistent, non-upgradable smart contracts, deployed to all [supported networks](/protocol/contracts).
 
 - TRAIN is built on top of an [improved version of Atomic Swaps](/protocol/atomic-swaps-prehtlc), which allows two parties to exchange assets trustlessly across different chains. Specifically, the two parties are the **User** and the **Solver**. Users send their **Intents** to Solvers, who fulfill them using Atomic Swaps.
-- There are **no third parties or gatekeepers**. The security of the exchange is fully ensured by the cryptographic protocol and [Light Client](/protocol/dApp) running on the user's browser.
+- There are **no third parties or gatekeepers**. The security of the exchange is fully ensured by the cryptographic protocol and local verification (e.g. [Light Client](/protocol/dApp)) running on the user's browser.
 - On-chain [Discovery](/protocol/discovery) registry, where new Solvers and networks can [permissionlessly](/protocol/usage-add-new-network) register.
 
-<CardGroup cols={2}>
-  <Card title="Try TRAIN in Action ->" icon="square-1" href="https://app.train.tech">
-    Try TRAIN on all major network testnets, including EVM-compatible chains, Starknet, TON, Solana, Aptos, Sui, and Stacks.
+<CardGroup cols={3}>
+  <Card title="Try TRAIN in Action" icon="square-1" href="https://app.train.tech">
+    Try TRAIN on all major network testnets, including EVM-compatible chains, Starknet, TON, Solana and Aptos.
   </Card>
   <Card title="Protocol Concepts" icon="square-2" href="/protocol/the-protocol">
     Explore the protocol concepts - Users, Solvers, Auctions, Atomic Swaps.
   </Card>
   <Card title="Protocol Spec" icon="square-3" href="/protocol-spec">
     To dig deeper, explore the protocol specification and the details of the protocol design.
-  </Card>
-  <Card title="API Reference" icon="square-4" href="/api-reference">
-    Check the API references for bridge deployment APIs and more.
   </Card>
 </CardGroup>
