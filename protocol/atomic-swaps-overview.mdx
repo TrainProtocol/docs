@@ -1,12 +1,12 @@
 ---
 title: 'Original HTLC'
-description: 'Introduction to original atomic swaps and their challenges'
+description: 'Introduction to original Atomic Swaps and their challenges'
 icon: atom-simple
 ---
 
-Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchange without requiring one chain to know the state of the other. The user generates a secret and locks funds on the source chain, the Solver locks funds on the destination chain, and they exchange the secret to unlock their respective funds, with a time limit ensuring fund retrieval if the exchange fails.
+Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchange without requiring one Network to know the state of the other. The User generates a secret and locks funds on the Source Network. Then, the Solver locks funds on the Destination Network. They exchange the secret to unlock their respective funds, with a time limit ensuring fund retrieval if the exchange fails.
 
-### The standard HTLC flow
+### The Standard HTLC Flow
 
 <Frame>
 ![HTLC](/images/htlc.png)
@@ -14,16 +14,16 @@ Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchan
 
 <Steps>
   <Step title="User Lock">
-    The user generates a *secret* S and computes *hashlock* HASH(S), then creates an HTLC, locking funds for the selected Solver in the source network.
+    The User generates a *Secret* S and computes *Hashlock* HASH(S). Then, they create an HTLC, locking funds for the selected Solver in the Source Network.
   </Step>
   <Step title="Solver Lock">
-    The Solver detects this HTLC and creates a counterparty HTLC with the same hashlock, locking funds for the user (initial amount minus the *Solver fee*) in the destination network.
+    The Solver detects this HTLC and creates a counterparty HTLC with the same Hashlock. This locks funds for the User (initial amount minus the *Solver Fee*) in the Destination Network.
   </Step>
   <Step title="User Unlock">
-    The user detects the HTLC in the destination network and reveals S to claim the funds.
+    The User detects the HTLC in the Destination Network and reveals S to claim the funds.
   </Step>
   <Step title="Solver Unlock">
-    The Solver detects the revealed S and reveals it in the source network to claim their funds.
+    The Solver detects the revealed S and reveals it in the Source Network to claim their funds.
   </Step>
 </Steps>
 
@@ -31,8 +31,10 @@ Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchan
 
 Despite their potential, HTLCs have proven impractical for real-world bridging due to three main issues:
 
-- **Secret Management**: Users must generate and securely manage a secret until the counterparty completes their transaction.
-- **Claim Transaction on the Destination Chain**: Users may lack assets on the destination chain, especially if it's their first time interacting with that network.
+- **Secret Management**: Users must generate and securely manage a Secret until the counterparty completes their transaction.
+- **Claim Transaction on the Destination Network**: Users may lack assets on the Destination Network, especially if it's their first time interacting with that Network.
 - **Liveness**: Users must maintain the state of the bridging process locally and actively monitor and respond to counterparty transactions.
 
-These challenges significantly impact the user experience and create barriers to adoption. The requirement for users to have assets on the destination chain is particularly problematic, as it creates a chicken-and-egg situation for those trying to bridge to a new network for the first time. Furthermore, the user managing the secret creates a dependency issue. If the user closes the browser, clears the cache, or loses access to the secret, the transaction flow cannot be recovered from the chain data.
+These challenges significantly impact the User experience and create barriers to adoption. The requirement for Users to have assets on the Destination Network is particularly problematic. It creates a chicken-and-egg situation for those trying to bridge to a new Network for the first time.
+
+Additionally, having the User manage the Secret creates a dependency issue. If the User closes the browser, clears the cache, or loses access to the Secret, the transaction flow cannot be recovered from the chain data.
