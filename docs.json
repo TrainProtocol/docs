@@ -7,6 +7,9 @@
     "dark": "#278EF6",
     "light": "#278EF6"
   },
+  "background": {
+    "decoration" : "gradient"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
@@ -100,7 +103,6 @@
     "default": "dark",
     "strict": true
   },
-  "background": {},
   "navbar": {
     "links": [
       {
