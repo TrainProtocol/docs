@@ -83,8 +83,8 @@
           {
             "group": "Deployment API",
             "pages": [
-              "api-reference/deploy-quickstart",
-              "api-reference/deploy-how-it-works"
+              "bridge-deployment-api/deploy-quickstart",
+              "bridge-deployment-api/deploy-how-it-works"
             ]
           }
         ]
