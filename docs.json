@@ -78,6 +78,18 @@
         ]
       },
       {
+        "tab": "Bridge Deployment",
+        "groups": [
+          {
+            "group": "Deployment API",
+            "pages": [
+              "api-reference/deploy-quickstart",
+              "api-reference/deploy-how-it-works"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Changelog",
         "groups": [
           {

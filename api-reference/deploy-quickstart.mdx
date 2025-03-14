@@ -12,9 +12,9 @@ Here is an example for deploying a bridge on the OP Stack rollup:
 
 ```bash
 curl --request POST \
-  --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment \
+  --url https://deploy.train.tech/api/v0.2/deployment \
   --header 'Content-Type: application/json' \
-  --header 'X-V8-APIKEY: <api-key>' \
+  --header 'X-TRAIN-APIKEY: <api-key>' \
   --data '{
   "chain_id": 45646545646,
   "network_name": "YourNetwork_TESTNET",
@@ -40,8 +40,8 @@ To monitor the deployment process, periodically call the Deployment Status endpo
 
 ```bash
 curl --request GET \
-  --url https://atomic-dev.layerswap.cloud/api/v0.2/deployment/{deploymentId} \
-  --header 'X-V8-APIKEY: <api-key>'
+  --url https://deploy.train.tech/api/v0.2/deployment/{deploymentId} \
+  --header 'X-TRAIN-APIKEY: <api-key>'
 ```
 
 Continue polling until the response status is `Completed`.
