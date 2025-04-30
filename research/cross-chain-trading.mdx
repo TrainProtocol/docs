@@ -4,51 +4,75 @@ description: "Introduces how a market can emerge around the TRAIN protocol"
 icon: money-bill-trend-up
 ---
 
-The TRAIN Protocol allows two parties to exchange assets across different blockchain networks using an [enhanced version of Atomic Swaps](/protocol/atomic-swaps-prehtlc) known as PreHTLCs. While this method is effective, it introduces specific operational constraints that influence the type of market the TRAIN Protocol can realistically support. This document outlines these limitations and explains the kinds of participants and markets that can emerge as a result.
+# Cross-Chain Trading
 
-### Premise 1
-TRAIN Protocol operates through a sequential process:
-1. Party 1 locks funds for Party 2.
-2. Party 2 locks funds for Party 1.
-3. Party 1 then chooses either to:
+The **TRAIN Protocol** enables two parties to exchange assets across different blockchain networks using an [enhanced version of Atomic Swaps](/protocol/atomic-swaps-prehtlc) called **PreHTLCs**. While effective, this method introduces specific operational constraints that shape the type of market the protocol can realistically support. This document outlines these constraints and explains the participants and markets that emerge as a result.
+
+---
+
+## How the TRAIN Protocol Works
+
+The TRAIN Protocol operates through a **sequential process**:
+
+1. **Party 1 locks funds** for Party 2.
+2. **Party 2 locks funds** for Party 1.
+3. **Party 1 decides** to either:
    - Release the funds and complete the trade.
    - Cancel and refund.
 
-### Premise 2
-The total allowable operation time is limited (typically 15–20 minutes) to protect both parties. Under normal conditions, a transaction can complete within 1–2 minutes if both parties act promptly.
+### Key Constraints
 
-### Premise 3
-Both Party 1 and Party 2 can cancel the transaction at any time before finalization without penalty (except for paying blockchain transaction fees).
+- The total operation time is **limited to 15–20 minutes** to protect both parties.
+- Under normal conditions, a transaction can complete within **1–2 minutes** if both parties act promptly.
+- Both parties can **cancel the transaction at any time** before finalization without penalty (except for blockchain transaction fees).
 
-### Premise 4
-Completing a trade involves transaction fees (gas fees) for both parties, incurred regardless of whether the trade is completed or canceled.
+---
 
-### Premise 5
-Due to the time window (up to 20 minutes), market prices for assets may fluctuate:
-- If the market price moves unfavorably for Party 2, they have a strong incentive to cancel the trade.
-- If the market price moves favorably for Party 1, they have a strong incentive to proceed, putting Party 2 at a disadvantage.
+## Challenges in Cross-Chain Trading
 
-### Premise 6
-If both parties act rationally to maximize profit, no stable market equilibrium can be formed under these conditions. Rational actors will cancel trades whenever market movements make it unprofitable for them.
+### **Market Price Fluctuations**
+- **Within the 20-minute window**, market prices for assets may fluctuate:
+  - If the price moves **unfavorably for Party 2**, they are incentivized to cancel the trade.
+  - If the price moves **favorably for Party 1**, they are incentivized to proceed, disadvantaging Party 2.
 
-### Premise 7
-A sustainable market can only exist if one side of the trade (Party 1) is not motivated purely by profit maximization, but rather by necessity. For example, a person needing gasoline in an emergency may be willing to pay a slightly elevated price without overanalyzing market conditions.
+### **Rational Behavior and Market Instability**
+- If both parties act rationally to maximize profit:
+  - **No stable market equilibrium can form.**
+  - Trades will be canceled whenever market movements make them unprofitable for either party.
 
-### Premise 8
-In this market:
-- Party 1 behaves as a retail, non-sophisticated participant.
-- Their primary goal is to execute the trade for practical or urgent reasons rather than to optimize financial outcomes.
+---
 
-### Premise 9
-Party 2, as a more strategic actor, must offer prices that balance two factors:
-1. The price must not be so unfavorable that Party 1 refuses the trade.
-2. The price must factor in potential market fluctuations over the next 20 minutes to ensure Party 2 will still want to complete the trade (thus avoiding wasted transaction fees).
+## A Sustainable Market: Necessity vs. Profit
+
+A sustainable market can only exist if **one side of the trade (Party 1)** is motivated by **necessity** rather than pure profit maximization. For example:
+
+> A person needing gasoline in an emergency may be willing to pay a slightly elevated price without overanalyzing market conditions.
+
+### Characteristics of Participants
+
+- **Party 1**: Acts as a **retail, non-sophisticated participant**.
+  - Their primary goal is to execute the trade for **practical or urgent reasons**, not financial optimization.
+- **Party 2**: Acts as a **strategic actor**.
+  - They must offer prices that balance two factors:
+    1. The price must not be so unfavorable that **Party 1 refuses the trade**.
+    2. The price must account for **potential market fluctuations** over the next 20 minutes to ensure Party 2 still wants to complete the trade (avoiding wasted transaction fees).
+
+---
+
+## The TRAIN Protocol Market
+
+The TRAIN Protocol inherently creates a **specialized type of cross-chain market**:
+
+- A market where **Party 1 acts out of necessity** rather than trading sophistication.
+- A market where **Party 2 strategically prices the trade**, accounting for volatility and transaction costs.
+- A market that **cannot support active speculative traders** on both sides because the structure incentivizes trade cancellations under rational profit-seeking behavior.
+
+---
 
 ## Conclusion
 
-The TRAIN Protocol inherently creates a specialized type of cross-chain market:
-- A market where Party 1 acts out of necessity rather than trading sophistication.
-- A market where Party 2 strategically prices the trade, accounting for volatility and transaction costs.
-- A market that cannot support active speculative traders on both sides because the structure incentivizes trade cancellations under rational profit-seeking behavior.
+The TRAIN Protocol does not simulate traditional exchanges. Instead, it creates a **transaction environment** that prioritizes **execution certainty** over financial optimization. This unique approach enables cross-chain markets to serve users with practical needs, ensuring trades are completed even in volatile conditions.
 
-Thus, TRAIN enables cross-chain markets not by simulating traditional exchanges, but by creating a transaction environment that serves users prioritizing execution certainty over financial optimization.
+<Note>
+**Key Takeaway**: The TRAIN Protocol thrives in scenarios where one party prioritizes necessity over profit, creating a stable and reliable cross-chain trading environment.
+</Note>
