@@ -141,7 +141,7 @@
   "seo": {
     "metatags": {
       "og:title": "TRAIN Protocol Docs",
-      "og:description": "TRAIN is an intent-based, trustless, permissionless cross-chain bridging (swapping) protocol",
+      "og:description": "TRAIN is an intent-based, trust-minimized, permissionless cross-chain bridging (swapping) protocol",
       "og:logo": "/logo/dark.svg"
     },
     "indexing": "navigable"
