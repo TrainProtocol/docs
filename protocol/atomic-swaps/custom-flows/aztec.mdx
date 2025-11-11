@@ -1,0 +1,46 @@
+---
+title: 'Aztec'
+description: 'Custom flow for the Aztec network in TRAIN atomic swaps (privacy-preserving).'
+icon: shield-check
+---
+
+This page documents TRAIN's custom flow for integrations with the Aztec network. It is part of TRAIN's Custom Flows collection — adaptations of the core atomic-swap pattern required by particular chains or environments. The Aztec network is privacy-preserving: user identity remains private, while balances, commitments, and HTLC state are publicly visible via protocol logs. These public logs provide the signals solvers need to coordinate swaps without revealing user identity. The following sections describe actors, core concepts, and the logical flows for the Aztec network.
+
+## Actors
+
+- User: the party moving value.
+ - Solver: entity selected by the Auction Manager to fulfill the user's swap intent; observes public logs on the Aztec network and coordinates cross-chain locking and redemption.
+ - Auction Manager: centralized matcher that selects a solver for a user intent.
+ - PreHTLC / TRAIN contract: per-chain contracts enforcing hashlock and timelock commitments.
+ - Public protocol logs: the Aztec network emits logs that reveal swap identifiers and HTLC state without exposing user identity.
+
+## Core concepts & invariants (Aztec network-specific)
+
+ - Private identity, public state: on the Aztec network, user identity is private while balances, commitments, and HTLC state are publicly visible via protocol logs; these public signals enable solver coordination.
+ - Public signals for solver coordination: solvers monitor the Aztec network's public protocol logs to detect commitments and actions without learning user identity.
+ - Ownership proof: for source-to-Aztec network flows, the user places an ownership proof (an ownership hash) in the destination field. The solver uses that value when locking on the Aztec network, and the user later proves ownership by revealing the preimage.
+
+## Logical flows
+
+### Aztec network to destination (user commits on the Aztec network)
+
+1. The user creates a private commitment on the Aztec network. A public protocol log is emitted with the canonical ID and an HTLC summary.
+2. The solver observes the log and locks equivalent funds on the destination chain, referencing the same ID.
+3. The user secures the Aztec network commitment by adding a hashlock that matches the cross-chain plan and a timelock that is different from the solver's (typically shorter) so refund ordering is preserved; the hashlock value must match the solver's.
+4. The secret (preimage) is revealed when a redeem occurs on either side; the reveal propagates cross-chain, enabling counterparty redemption.
+5. If timelocks expire without fulfillment, the depositor reclaims funds via the refund path.
+
+### Source to Aztec network (user commits on source)
+
+1. The user commits on the source chain and encodes an ownership proof (an ownership hash) into the destination field; this value binds the future Aztec network lock to the user.
+2. The solver monitors the source chain and, upon detection, locks funds on the Aztec network using the same ID and the provided ownership hash.
+3. The user verifies the Aztec network lock via public logs, then finalizes coordination on the source side by adding a hashlock and a timelock.
+4. The solver redeems on the source chain (revealing the secret), enabling the user to redeem on the Aztec network by presenting both the secret and the ownership key.
+5. Refunds are available after timelocks expire; parties reclaim funds according to standard HTLC rules.
+
+## Failure modes and mitigations
+
+- If the solver fails to lock on the counterparty chain, the user reclaims funds via the refund path after the timelock. The Auction Manager can penalize unreliable solvers.
+- If the solver locks but does not redeem, the user reclaims funds via the refund path after the timelock. Protocol reputation and slashing reduce recurrence.
+- Mismatched IDs or hashes prevent the swap from completing. UI and integrator tooling must validate exact values before committing.
+- If the secret is never revealed, refunds after the timelock apply.

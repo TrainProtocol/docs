@@ -41,7 +41,14 @@
                 "icon": "swap",
                 "pages": [
                   "protocol/atomic-swaps-overview",
-                  "protocol/atomic-swaps-prehtlc"
+                  "protocol/atomic-swaps-prehtlc",
+                  {
+                    "group": "Custom Flows (TRAIN)",
+                    "icon": "puzzle",
+                    "pages": [
+                      "protocol/atomic-swaps/custom-flows/aztec"
+                    ]
+                  }
                 ]
               },
               "protocol/multi-hop",
