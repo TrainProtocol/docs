@@ -46,7 +46,6 @@
               },
               "protocol/multi-hop",
               "protocol/slashing",
-              "protocol/discovery",
               "protocol/auction",
               "protocol/dApp"
             ]

@@ -3,14 +3,13 @@ title: 'Auction'
 description: 'The auction system in the TRAIN protocol is designed to efficiently match users with Solvers for cross-chain swaps'
 icon: scale-balanced
 ---
+The auction system in TRAIN uses a centralized Auction Manager: registered Solvers compete to quote on user swap intents, the manager selects the best quote, and the user commits funds naming the winning Solver. The centralized manager can then enforce reliability (for example by slashing or temporarily restricting misbehaving solvers).
 
-The auction systems are centralized; they do not introduce any trust assumptions or affect the security mechanisms of the core protocol. The auction is solely responsible for matching the user and the Solver.
+In short:
 
-The auction system works like this:
-
-1. Get the list of active Solvers from the [Discovery](/protocol/discovery) contract.
-2. Accept quotes from the Solvers.
-3. Decide the winner.
-4. Notify the dApp. The dApp then executes the [Atomic Swap](/protocol/atomic-swaps-prehtlc).
+- Solvers register and advertise availability.
+- The Auction Manager requests quotes, selects the best offer, and returns the winner to the dApp/user.
+- The user commits funds and specifies the winning Solver in the commit transaction.
+- The chosen Solver fulfills the destination-side lock and completes the swap; failures trigger enforcement actions by the manager.
 
 More technical details can be found in the [Auction Spec](/protocol-spec/auction).
