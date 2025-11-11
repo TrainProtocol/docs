@@ -58,7 +58,11 @@ sequenceDiagram
 
 ### Solver Fails to Release the User's Funds
 
-In scenarios where the Solver releases their funds but fails to release the User's funds, the User can capture the secret used to release the Solver's funds. The User can then use this secret to manually release their own funds on the destination chain.
+In scenarios where the Solver releases their funds but fails to release the User's funds, the protocol provides two mechanisms:
+
+1. **Manual Redemption**: The User captures the secret revealed when the Solver redeemed on the source chain. The User can then use this secret to manually redeem their own funds on the destination chain, bypassing the Solver's failure.
+
+2. **Reward/Slash Mechanism**: The Auction Manager tracks Solver reliability and reputation. Other solvers can redeem on behalf of the user and earn a reward for completing the swap. The original solver who failed is penalized through reputation loss and potential slashing, reducing their ability to win future auctions and incentivizing reliable behavior.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 

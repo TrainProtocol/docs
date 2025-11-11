@@ -18,8 +18,10 @@ icon: network-wired
     - Verify that the `timelock` provides sufficient time to act, ensuring it is at least [$T + \Delta$](/protocol-spec/model/#standard-flow).
     - Verify that the `Id` is equal to the original commitment Id in the `TokenCommitted` event.
   </Step>
-  <Step title="(signature flow) hashlock addition on behalf of the user" stepNumber="3*">
-    Call the `addLockSig()` function, providing both the user's `signature` and the message data (`Id`, `hashlock`, `timelock`).
+  <Step title="(signature flow) addLockSig — only when user chose signature flow">
+    Only applicable if the user explicitly chose the signature flow (see dApp implementation). In that case the user will provide a signed addLock message. The solver (or any authorized submitter) may call `addLockSig()` providing the user's `signature` and the signed message data (`Id`, `hashlock`, `timelock`) to finalize the lock on behalf of the user.
+
+    If the user did not choose the signature flow (i.e., they will call `addLock()` on-chain themselves), the solver MUST NOT call `addLockSig()`.
   </Step>
   <Step title="Complete the exchange" stepNumber="4">
     - Once verified, call `redeem()` on both the source and destination chains.

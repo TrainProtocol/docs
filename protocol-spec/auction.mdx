@@ -4,24 +4,54 @@ description: 'Explain the technical specification of the Auction system'
 icon: scale-balanced
 ---
 
+## Overview
+
+The Auction Manager is a centralized component that coordinates the selection of Solvers for user swap intents. The process works as follows:
+
+1. **Solver Registration**: Solvers register with the Auction Manager and advertise their availability for specific chains and assets.
+2. **Quote Request**: When a user initiates a swap intent via the dApp, the Auction Manager requests quotes from eligible Solvers.
+3. **Winner Selection**: The Auction Manager evaluates quotes based on criteria such as price, speed, and reputation, then selects the best Solver as the winner.
+4. **User Commit**: The user commits funds on the source chain, naming the winning Solver in the commit transaction.
+5. **Solver Lock & Completion**: The winning Solver locks funds on the destination chain and completes the swap. The Auction Manager enforces reliability through reputation tracking and slashing mechanisms.
+
+## Auction Flow (On-Chain)
+
 <Steps>
-  <Step title="User Swap & Solver Discovery">
-    The user specifies swap details in the dApp. The dApp calls the `discover()` function of the [Discovery contract](/protocol-spec/discovery) to get all possible Solvers for the specific swap.
-  </Step>
   <Step title="User Commit">
-    The user commits funds by specifying an array of Solvers (Solvers[]) and a timelock, which defines the auction duration. The timelock should allow a reasonable amount of time for the auction to take place. It can exceed the Solver's `lock()` timelock but must be reduced in `addLock` to prevent the Solver from potentially stealing user funds. At this stage, there is no need to specify the `srcReceiver`; the final `srcReceiver` will be added during `addLock`. In the `tokenCommitted` event, the array of Solvers must be emitted.
+    The user commits funds on the source chain by calling the `commit()` function, specifying the winning Solver's address and a timelock that defines the swap duration. The `commit()` function emits a `TokenCommitted` event. The timelock should allow sufficient time for the swap to complete; it must later be reduced in `addLock()` to establish proper refund ordering and prevent Solver misbehavior.
   </Step>
-  <Step title="Auction">
-    All Solvers subscribed to the `tokenCommitted` event for their respective addresses are notified. The auction ensures, that all specified solvers are registered in the [Discovery contract](/protocol-spec/discovery). The auction is executed (treated as a black box with the only requirement that the auction will only execute with Solvers registered in the Discovery contract), and one Solver is selected as the winner to lock the funds.
+  <Step title="Solver Lock">
+    The winning Solver observes the `TokenCommitted` event and locks equivalent funds on the destination chain by calling the `lock()` function with the same intent ID. The Solver provides a reward amount to incentivize timely redemption.
   </Step>
-  <Step title="Lock">
-    The user then calls `addLock()` or `addLockSig()` with the same data but with a decreased timelock and also specifies the `srcReceiver` from the original Solvers list, which must be the winning Solver.
+  <Step title="User Finalize (addLock)">
+    The user observes the Solver's lock on the destination chain and finalizes the commitment on the source chain by calling `addLock()` or `addLockSig()`, specifying a reduced timelock and confirming the Solver as the `srcReceiver`.
+  </Step>
+  <Step title="Redemption & Completion">
+    The Solver reveals the secret to claim funds on both chains, completing the swap. If the Solver fails to act reliably, the Auction Manager applies penalties (reputation loss, slashing).
   </Step>
 </Steps>
 
-### The Auction
+## Auction Manager Responsibilities
 
-<Warning>Work in progress</Warning>
+- **Solver Registration & Tracking**: Maintains a registry of active Solvers and tracks their reputation scores and performance history.
+- **Quote Evaluation**: Receives swap intents and requests competitive quotes from eligible Solvers on the required chains.
+- **Winner Selection**: Selects the best Solver based on price, latency, and reputation metrics.
+- **Reliability Enforcement**: Monitors Solver performance (on-time locks, timely redemptions, fund releases) and applies slashing based on behavior.
+- **Intent Settlement**: Confirms swap completion or failure and updates Solver reputation accordingly.
+
+## Solver Reliability & Incentives
+
+The Auction Manager enforces Solver reliability through:
+
+- **Reputation Score**: Each Solver maintains a reputation score that influences future quote acceptance and auction selection.
+- **Reward/Slashing Mechanism**: Solvers who fail to lock, redeem, or release user funds are penalized through slashing; other Solvers can earn rewards by completing the swap on the failed Solver's behalf.
+- **Auction Selection Bias**: The Auction Manager favors Solvers with higher reputation scores and progressively reduces winning probability for unreliable Solvers.
+
+For details on how rewards and slashing work on-chain, see [Reward-Slashing](/protocol-spec/reward-slashing).
+
+## Edge Cases
+
+For failure scenarios and mitigation strategies, see [Edge Cases](/protocol-spec/edge-cases).
 
 
 

@@ -75,7 +75,6 @@
               "protocol-spec/edge-cases",
               "protocol-spec/core",
               "protocol-spec/reward-slashing",
-              "protocol-spec/discovery",
               "protocol-spec/auction",
               {
                 "group": "Implementation",

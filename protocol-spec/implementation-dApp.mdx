@@ -19,8 +19,8 @@ icon: browser
   <Step title="Add lock to your PreHTLC on the source chain">
     Call `addLock()`, passing in the captured `hashlock` and `timelock` of [$T + \Delta$](/protocol-spec/model/#standard-flow).
   </Step>
-  <Step title="(signature flow) Sign a message instead of adding a lock" stepNumber="3*">
-    The user signs a message containing the `Id`, `hashlock`, and `timelock`.
+  <Step title="(signature flow) Sign a message instead of adding a lock">
+     This step can be used instead of step 3: the user signs a message (addLockSig) containing the `Id`, `hashlock`, and `timelock`, which an authorized party can submit to finalize the lock.
   </Step>
 </Steps>
 
