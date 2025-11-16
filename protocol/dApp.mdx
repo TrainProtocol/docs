@@ -10,13 +10,13 @@ icon: browser
 
 ### Overview
 
-The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface for seamless cross-chain transactions. It integrates with the Discovery mechanism to fetch available Solvers and participates in the Solver Auction process to determine optimal routes for bridging.
+The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface for seamless cross-chain transactions. It submits user intents to the centralized [Auction Manager](/protocol/auction), receives the winning Solver quote, and orchestrates the [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow.
 
 The dApp has **three** main responsibilities:
 
-1. Connecting to the [Discovery Registry](/protocol/discovery) to fetch available Solvers and Networks
-2. Connecting to the [Auction](/protocol/auction) to transmit the User's intent and get quotes from Solvers
-3. Executing an [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow
+1. Accept user swap intent and submit it to the [Auction Manager](/protocol/auction)
+2. Display the winning Solver quote and allow the user to commit funds (specifying the winning Solver)
+3. Execute the [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow (observe destination lock, provide hashlock to user)
 
 ### Observing the Destination Network
 

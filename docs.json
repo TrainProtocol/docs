@@ -47,7 +47,6 @@
               },
               "protocol/multi-hop",
               "protocol/slashing",
-              "protocol/discovery",
               "protocol/auction",
               "protocol/dApp"
             ]
@@ -70,7 +69,6 @@
               "protocol-spec/edge-cases",
               "protocol-spec/core",
               "protocol-spec/reward-slashing",
-              "protocol-spec/discovery",
               "protocol-spec/auction",
               "protocol-spec/HKDF",
               {
