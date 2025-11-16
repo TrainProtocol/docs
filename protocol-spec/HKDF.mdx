@@ -1,0 +1,30 @@
+---
+title: 'HKDF'
+description: 'Describes HMAC-based Key Derivation Function(HKDF) usage in TRAIN'
+icon: hashtag
+---
+
+Train uses HKDF (HMAC-based Key Derivation Function) to generate deterministic and secure secrets for atomic swaps.
+HKDF is a standardized key-derivation algorithm, which lets us turn one signature into any number of unique, swap-specific secrets.
+If you are not familiar with HKDF you can consider it as just hashing.
+
+<Steps>
+  <Step title="User Sign">
+    The users signs the message ``I am using Train``.
+  </Step>
+  <Step title="Initial Key">
+    ```initial_key = HKDF-Extract(signature)```
+    This key is cached locally by the dApp, as long as the cache persists, more signatures are not needed.
+    </Step>
+     <Step title="Derive secret">
+    ```secret = HKDF-Expand(initial_key, salt = (source_chain, destination_chain, timelock))```
+    For each swap, dapp derives a new secret using initial_key, and the salt.
+    </Step>
+</Steps>
+
+### Advanatges of HKDF derived secrets.
+
+- **Deterministic**: The dApp can always recompute the secret as salt is not random, but is based on public data from the blockchain.
+- **Unique**: Even if two swaps involve the same user, they will have different secrets because the salts differ.
+- **No user Friction**: The user signs only once, and the dapp produces unlimited secrets from that one signature.
+- **Recoverable**: If the cached initial_key is lost, the user can simply sign the same message again and regenerate the identical initial key.
