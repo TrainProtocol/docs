@@ -146,8 +146,8 @@
   },
   "seo": {
     "metatags": {
-      "og:title": "TRAIN Protocol Docs",
-      "og:description": "TRAIN is an intent-based, trustless, permissionless cross-chain bridging (swapping) protocol",
+      "og:title": "TRAIN Protocol Documentation",
+      "og:description": "Access the complete documentation of the TRAIN Protocol – your solution for decentralized and trustless cross-chain asset interoperability.",
       "og:logo": "/logo/dark.svg"
     },
     "indexing": "navigable"
