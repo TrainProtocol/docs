@@ -11,7 +11,7 @@ This page documents TRAIN's custom flow for integrations with the Aztec network.
 - User: the party moving value.
  - Solver: entity selected by the Auction Manager to fulfill the user's swap intent; observes public logs on the Aztec network and coordinates cross-chain locking and redemption.
  - Auction Manager: centralized matcher that selects a solver for a user intent.
- - PreHTLC / TRAIN contract: per-chain contracts enforcing hashlock and timelock commitments.
+ - HTLC / TRAIN contract: per-chain contracts enforcing hashlock and timelock commitments.
  - Public protocol logs: the Aztec network emits logs that reveal swap identifiers and HTLC state without exposing user identity.
 
 ## Core concepts & invariants (Aztec network-specific)

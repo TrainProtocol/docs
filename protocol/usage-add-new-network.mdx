@@ -6,10 +6,10 @@ icon: network-wired
 
 <Steps>
   <Step title="Contract Implementation">
-    Implement [PreHTLC](/protocol/atomic-swaps-prehtlc) standards in the network.
+    Implement [HTLC with recoverable secret generation](/protocol/atomic-swaps-secret_gen) standards in the network.
   </Step>
   <Step title="Solver Agent Implementation">
-    If there is no existing implementation (e.g., EVM), implement the Solver Agent Chain Library for the new network (functions for interacting with deployed PreHTLC contracts on specific chains).
+    If there is no existing implementation (e.g., EVM), implement the Solver Agent Chain Library for the new network (functions for interacting with deployed HTLC contracts on specific chains).
   </Step>
   <Step title="Run Solver">
     Run an Solver for two networks—one well connected to others (already active Solvers) and the new network.

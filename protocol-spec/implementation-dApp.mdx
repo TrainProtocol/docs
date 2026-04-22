@@ -5,22 +5,21 @@ icon: browser
 ---
 
 <Steps>
-  <Step title="Create a commitment">
-    Call the `commit()` function to lock funds for a specified party with a timelock of [$T + \beta$](/protocol-spec/model/#standard-flow).
+  <Step title="Derive secret and hashlock">
+    Using the [recoverable secret generation mechanism](/protocol/atomic-swaps-secret_gen), derive a secret from the user's wallet signature, source chain, destination chain, and timelock parameters. Hash the secret to create the hashlock.
+  </Step>
+  <Step title="Lock funds on source chain">
+    Call the `lock()` function to lock funds with the derived hashlock and a timelock of [$T + \Delta$](/protocol-spec/model/#standard-flow).
   </Step>
   <Step title="Monitor the destination chain">
     - Watch for the `TokenLocked` event or use the `Id` on the destination chain by calling `getDetails()`.
-    - Verify that the `hashlock` of the `HTLC` on the destination chain provides sufficient time to act, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
-    - Once detected, capture the `hashlock` value.
+    - Verify that the `hashlock` of the `HTLC` on the destination chain matches your derived hashlock and provides sufficient time, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
     <Note>
       The state of the destination chain should be read from a Light Client if one exists; if not, it should be read from multiple RPC providers.
     </Note>
   </Step>
-  <Step title="Add lock to your PreHTLC on the source chain">
-    Call `addLock()`, passing in the captured `hashlock` and `timelock` of [$T + \Delta$](/protocol-spec/model/#standard-flow).
-  </Step>
-  <Step title="(signature flow) Sign a message instead of adding a lock">
-     This step can be used instead of step 3: the user signs a message (addLockSig) containing the `Id`, `hashlock`, and `timelock`, which an authorized party can submit to finalize the lock.
+  <Step title="Reveal secret to unlock funds">
+    Call `redeem()` on the destination chain with the derived secret to claim funds. The Solver will use the same secret to unlock on the source chain.
   </Step>
 </Steps>
 

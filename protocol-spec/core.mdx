@@ -6,24 +6,20 @@ icon: engine
 
 <Tabs>
   <Tab title="Overview">
-    The core of the protocol relies on the PreHTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions.
+    The core of the protocol relies on the HTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions.
 
     <Frame>
-      <img width="300" src="/images/pre-htlc.png" />
+      <img width="300" src="/images/htlc.png" />
     </Frame>
 
     ### Core Functions
 
-    <Card title="commit ()" icon="code-commit" horizontal="true">
-      Creates a PreHTLC on the source chain, representing the intent to exchange with a specific party without including a hashlock.
+    <Card title="lock ()" icon="code-commit" horizontal="true">
+      Creates an HTLC on the source chain with a derived hashlock from the recoverable secret generation mechanism.
     </Card>
 
-    <Card title="lock ()" icon="lock" horizontal="true">
-      Creates an HTLC on the destination chain, locking funds with a specified hashlock and timelock.
-    </Card>
-
-    <Card title="addlock () or addLockSig ()" icon="file-lock" horizontal="true">
-      Adds a hashlock to the HTLC on the chain, as well as updates the timelock, finalizing the commitment to the exchange. `addLockSig` signs a transaction allowing the other party to execute it on behalf of the initiator.
+    <Card title="reveal ()" icon="unlock" horizontal="true">
+      Reveals the derived secret to unlock HTLCs across all participating chains.
     </Card>
 
     <Card title="redeem ()" icon="lock-open" horizontal="true">
@@ -36,7 +32,7 @@ icon: engine
   </Tab>
 
   <Tab title="Code">
-    Implementation of the PreHTLC core contracts can be found at the [TRAIN repo](https://github.com/trainprotocol/contracts/tree/dev) for any VM blockchain, such as [EVM](https://github.com/trainprotocol/contracts/tree/dev/chains/evm), [TON](https://github.com/trainprotocol/contracts/tree/dev/chains/ton), [Solana](https://github.com/trainprotocol/contracts/tree/dev/chains/solana), [Sui](https://github.com/trainprotocol/contracts/tree/dev/chains/sui), [Fuel](https://github.com/trainprotocol/contracts/tree/dev/chains/fuel), [Aztec](https://github.com/trainprotocol/contracts/tree/dev/chains/aztec), and more.
+    Implementation of the HTLC core contracts can be found at the [TRAIN repo](https://github.com/trainprotocol/contracts/tree/dev) for any VM blockchain, such as [EVM](https://github.com/trainprotocol/contracts/tree/dev/chains/evm), [TON](https://github.com/trainprotocol/contracts/tree/dev/chains/ton), [Solana](https://github.com/trainprotocol/contracts/tree/dev/chains/solana), [Sui](https://github.com/trainprotocol/contracts/tree/dev/chains/sui), [Fuel](https://github.com/trainprotocol/contracts/tree/dev/chains/fuel), [Aztec](https://github.com/trainprotocol/contracts/tree/dev/chains/aztec), and more.
 
     ```solidity
     contract TRAINERC20 {

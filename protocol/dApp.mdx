@@ -10,13 +10,13 @@ icon: browser
 
 ### Overview
 
-The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface for seamless cross-chain transactions. It submits user intents to the centralized [Auction Manager](/protocol/auction), receives the winning Solver quote, and orchestrates the [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow.
+The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface for seamless cross-chain transactions. It submits user intents to the centralized [Auction Manager](/protocol/auction), receives the winning Solver quote, and orchestrates the [HTLC flow with recoverable secret generation](/protocol/atomic-swaps-secret_gen).
 
 The dApp has **three** main responsibilities:
 
 1. Accept user swap intent and submit it to the [Auction Manager](/protocol/auction)
 2. Display the winning Solver quote and allow the user to commit funds (specifying the winning Solver)
-3. Execute the [Atomic Swap](/protocol/atomic-swaps-prehtlc) flow (observe destination lock, provide hashlock to user)
+3. Execute the [HTLC flow](/protocol/atomic-swaps-secret_gen) (derive secret, lock funds, observe destination lock, reveal secret)
 
 ### Observing the Destination Network
 

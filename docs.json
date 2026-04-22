@@ -41,14 +41,14 @@
                 "icon": "swap",
                 "pages": [
                   "protocol/atomic-swaps-overview",
-                  "protocol/atomic-swaps-prehtlc",{
+                  "protocol/atomic-swaps-secret_gen",
+                  {
                     "group": "Custom Flows (TRAIN)",
                     "icon": "puzzle",
                     "pages": [
                       "protocol/atomic-swaps/custom-flows/aztec"
                     ]
-                  },
-                  "protocol/atomic-swaps-secret_gen"
+                  }
                 ]
               },
               "protocol/multi-hop",
@@ -85,18 +85,6 @@
                   "protocol-spec/implementation-solver"
                 ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Bridge Deployment",
-        "groups": [
-          {
-            "group": "Deployment API",
-            "pages": [
-              "bridge-deployment-api/deploy-quickstart",
-              "bridge-deployment-api/deploy-how-it-works"
             ]
           }
         ]
