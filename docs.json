@@ -56,12 +56,6 @@
               "protocol/auction",
               "protocol/dApp"
             ]
-          },
-          {
-            "group": "Research",
-            "pages": [
-              "research/cross-chain-trading"
-            ]
           }
         ]
       },
