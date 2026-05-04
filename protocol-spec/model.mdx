@@ -4,60 +4,54 @@ description: 'Outlines the main protocol model for performing atomic swaps betwe
 icon: table-tree
 ---
 
-The protocol model relies on atomic swaps for parties exchanging assets across different chains. The model outlines the core flow of assets and actions that should be taken by each party for a successful asset exchange. Depending on the source and destination, and whether there is a party willing to exchange on those chains, either the [Standard flow](#standard-flow) or [Multi-hop flow](#multi-hop-flow) is used.
+The protocol model relies on atomic swaps with recoverable secret generation for parties exchanging assets across different chains. The model outlines the core flow of assets and actions that should be taken by each party for a successful asset exchange. Depending on the source and destination, and whether there is a party willing to exchange on those chains, either the [Standard flow](#standard-flow) or [Multi-hop flow](#multi-hop-flow) is used.
 
 ### Standard flow
 
-When a party directly supports both the source and destination chains and is willing to perform the swap, the standard flow applies. The user initiates the process by calling `commit` and setting the timelock to $T + \beta$, where $T$ is the current timestamp and $\beta$ is the duration for which the user is willing to lock their funds. The party performing the exchange must then call the `lock` function on the destination chain, setting the timelock to $T + 2\Delta$ ($\beta < 2\Delta$), where $\Delta$ is a reasonable duration (e.g., 15 minutes) to ensure the user has time to act and leave sufficient time for the party. Finally, the user calls `addLock`, specifying the timelock $T + \Delta$ and completing their commitment with a hashlock.
+When a party (Solver) directly supports both the source and destination chains and is willing to perform the swap, the standard flow applies. The user derives a secret using the [recoverable secret generation mechanism](/protocol/atomic-swaps-secret_gen) and locks funds on the source chain with the hashlock of that secret, setting the timelock to $T + \Delta$, where $T$ is the current timestamp and $\Delta$ is a reasonable duration (e.g., 15 minutes). The Solver observes this lock and creates a matching lock on the destination chain with the same hashlock and timelock of $T + 2\Delta$. The user then signs and transmits the derived secret to the Solver. The Solver reveals the secret on both chains to complete the swap.
 
 Here are the steps:
 
 <Steps>
-  <Step title="User Commit">
-    The user creates a commit object on the source chain with a timelock of $T + \beta$.
+  <Step title="User Derives Secret and Locks">
+    The user derives a secret using [HKDF](/protocol-spec/HKDF) and creates a lock object on the source chain with the hashlock and a timelock of $T + \Delta$.
   </Step>
-  <Step title="Party Lock">
-    The party creates a lock object on the destination chain with a hashlock and a timelock of $T + 2\Delta$.
+  <Step title="Solver Lock">
+    The Solver observes the lock on the source chain and creates a matching lock object on the destination chain with the same hashlock and a timelock of $T + 2\Delta$.
   </Step>
-  <Step title="User AddLock">
-    The user adds a lock to the commitment on the source chain, adding a hashlock and updating the timelock to $T + \Delta$.
+  <Step title="User Transmits Signed Secret">
+    The user signs and transmits the derived secret to the Solver via off-chain channels.
   </Step>
-  <Step title="Party Redeem">
-    The party redeems the locked funds on the destination chain.
-  </Step>
-  <Step title="User Redeem">
-    The user redeems the locked funds on the source chain.
+  <Step title="Solver Reveals and Redeems">
+    The Solver reveals the secret on the destination chain to unlock the user's funds (earning a reward for this action), then reveals it on the source chain to claim their primary fee. The Solver is economically incentivized to complete the destination redemption promptly—if they delay, any other actor can step in and claim the reward instead.
   </Step>
 </Steps>
 
 <Accordion title="Standard transaction sequence diagram" icon="arrows-left-right">
 ```mermaid
 sequenceDiagram
-    participant P1 as Party 1
+    participant User
     participant SC as Source Chain
-    participant P2 as Party 2
+    participant Solver
     participant DC as Destination Chain
     
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>DC: lock()
-    DC-->>P1: TokenLocked
-    P1->>SC: addLock()
-    SC-->>P2: TokenLockAdded
-    P2->>DC: redeem()
-    DC-->>P1: TokenRedeemed
-    P2->>SC: redeem()
-    SC-->>P2: TokenRedeemed
+    User->>SC: lock() with hashlock
+    SC-->>Solver: TokenLocked
+    Solver->>DC: lock() with same hashlock
+    DC-->>User: TokenLocked
+    User->>Solver: sign(secret)
+    Solver->>DC: redeem(secret)
+    DC-->>User: TokenRedeemed
+    Solver->>SC: redeem(secret)
+    SC-->>Solver: TokenRedeemed
 ```
 </Accordion>
 
 ### Multi-hop flow
 
-When transferring funds from a source chain to a destination chain is not possible due to the absence of a party directly linking the two, a multi-hop approach is used, with the chain length denoted as $n$. In this process, the user initially commits funds on the source chain to the first party. Each party in the sequence subsequently calls commit, committing funds for the next party, until the final party on the destination chain calls lock. This locks the funds with a hashlock and the longest timelock, set to $T + 2^{n-1}\Delta$, where $T$ is the current timestamp and $\Delta$ is a reasonable duration (e.g., 15 minutes). The Solver on the destination chain locks funds with a duration of $2^{n-1}\Delta$ from the current timestamp, ensuring sufficient time for each Solver in the chain to act.
+When transferring funds from a source chain to a destination chain is not possible due to the absence of a party directly linking the two, a multi-hop approach is used, with the chain length denoted as $n$. In this process, the user derives a secret and locks funds on the source chain to the first Solver. Each Solver in the sequence subsequently locks funds for the next Solver in the chain, until the final Solver on the destination chain locks funds for the user. The final Solver on the destination chain locks funds with the longest timelock, set to $T + 2^{n-1}\Delta$, where $T$ is the current timestamp and $\Delta$ is a reasonable duration (e.g., 15 minutes). All locks use the same hashlock derived from the user's secret, ensuring atomic execution across all chains.
 
-Following this, each party in the hop-chain, starting from the user to the second-to-last party, performs the addLock function with the same hashlock as used on the destination chain but with progressively shorter timelocks. For the user, the timelock is set to $T + 2^{n-2}\Delta$, while for the second-to-last party, it is $T + 2^0\Delta$. This pattern continues recursively, with each party adding a lock using the hashlock and a timelock specific to their position in the chain.
-
-When the party on the destination chain calls redeem and reveals the secret, they transfer the user's funds and redeem the locked funds for themselves. This revelation of the secret allows each preceding party in the chain to sequentially redeem their funds, completing the multi-hop swap.
+The user transmits the derived secret through the Solver chain. When the final Solver on the destination chain reveals the secret, they unlock the user's funds and redeem their own. This revelation of the secret allows each preceding Solver in the chain to sequentially redeem their funds, completing the multi-hop swap. Each Solver in the intermediate positions releases funds for the next party while claiming their reward.
 
 Here are the steps:
 
@@ -69,28 +63,27 @@ import MultihopSteps from '/snippets/multihop-steps.mdx';
 
 ```mermaid
 sequenceDiagram
-    participant P1 as Party 1
+    participant User
     participant SC as Source Chain
-    participant P2 as Party 2
+    participant Solver1
     participant IC as Intermediary Chain
-    participant P3 as Party 3
+    participant Solver2
     participant DC as Destination Chain
     
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>IC: commit()
-    IC-->>P3: TokenCommitted
-    P3->>DC: lock()
-    DC-->>P1: TokenLocked
-    P1->>SC: addLock()
-    SC-->>P2: TokenLockAdded
-    P2->>IC: addLock()
-    IC-->>P3: TokenLockAdded
-    P3->>DC: redeem()
-    DC-->P1: TokenRedeemed
-    P3->>IC: redeem()
-    IC-->>P2: TokenRedeemed
-    P2->>SC: redeem()
+    User->>SC: lock() with hashlock
+    SC-->>Solver1: TokenLocked
+    Solver1->>IC: lock() with same hashlock
+    IC-->>Solver2: TokenLocked
+    Solver2->>DC: lock() with same hashlock
+    DC-->>User: TokenLocked
+    User->>Solver1: sign(secret)
+    Solver1->>Solver2: forward secret
+    Solver2->>DC: redeem(secret)
+    DC-->>User: TokenRedeemed
+    Solver2->>IC: redeem(secret)
+    IC-->>Solver1: TokenRedeemed
+    Solver1->>SC: redeem(secret)
+    SC-->>Solver1: TokenRedeemed
 ```
 
 </Accordion>

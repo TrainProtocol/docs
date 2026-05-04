@@ -6,26 +6,24 @@ icon: network-wired
 
 <Steps>
   <Step title="Monitor the source chain">
-    Subscribe to `TokenCommitted` events to detect any commitments made to your address.
+    Subscribe to `TokenLocked` events to detect any locks made to your address with a hashlock.
   </Step>
   <Step title="Lock funds on the destination chain">
-    - Generate `S` and `hashlock`.
-    - When a commitment is detected, call `lock()` on the destination chain and pass the generated `hashlock` with `timelock` of [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
+    - When a lock is detected, call `lock()` on the destination chain and pass the same `hashlock` with `timelock` of [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
   </Step>
-  <Step title="Verify the commitment lock">
-    - Monitor the source chain for the `TokenLockAdded` event (or `getDetails()` function) on the existing commitment.
-    - Once detected, verify that the `hashlock` matches the one you previously generated.
+  <Step title="Verify the lock on source chain">
+    - Monitor the source chain for the `TokenLocked` event details (or use the `getDetails()` function) on the detected lock.
+    - Verify that the `hashlock` matches what the user used.
     - Verify that the `timelock` provides sufficient time to act, ensuring it is at least [$T + \Delta$](/protocol-spec/model/#standard-flow).
-    - Verify that the `Id` is equal to the original commitment Id in the `TokenCommitted` event.
+    - Verify that the `Id` is consistent and valid.
   </Step>
-  <Step title="(signature flow) addLockSig — only when user chose signature flow">
-    Only applicable if the user explicitly chose the signature flow (see dApp implementation). In that case the user will provide a signed addLock message. The solver (or any authorized submitter) may call `addLockSig()` providing the user's `signature` and the signed message data (`Id`, `hashlock`, `timelock`) to finalize the lock on behalf of the user.
-
-    If the user did not choose the signature flow (i.e., they will call `addLock()` on-chain themselves), the solver MUST NOT call `addLockSig()`.
+  <Step title="Receive secret from user">
+    The user will sign and transmit the derived secret to you via off-chain channels. Verify that when hashed, this secret matches the hashlock on both chains.
   </Step>
-  <Step title="Complete the exchange" stepNumber="4">
-    - Once verified, call `redeem()` on both the source and destination chains.
-    - Pass in the previously generated `S` value.
+  <Step title="Complete the exchange">
+    - Once you receive the secret, call `redeem()` on the destination chain to unlock the user's funds. <strong>You are incentivized to do this quickly because a reward is reserved for whoever completes this transaction. If you delay, another actor can call redeem and claim the reward instead.</strong>
+    - Call `redeem()` on the source chain to claim your primary fee/reward.
+    - Pass in the secret value received from the user.
   </Step>
 </Steps>
 

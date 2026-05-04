@@ -14,16 +14,16 @@ icon: engine
 
     ### Core Functions
 
-    <Card title="lock ()" icon="code-commit" horizontal="true">
-      Creates an HTLC on the source chain with a derived hashlock from the recoverable secret generation mechanism.
-    </Card>
-
-    <Card title="reveal ()" icon="unlock" horizontal="true">
-      Reveals the derived secret to unlock HTLCs across all participating chains.
+    <Card title="lock ()" icon="lock" horizontal="true">
+      User creates an HTLC on the source chain with a hashlock derived from the recoverable secret generation mechanism. This locks the user's funds for the specified Solver.
     </Card>
 
     <Card title="redeem ()" icon="lock-open" horizontal="true">
-      Reveals the secret to claim locked funds.
+      Solver reveals the secret on the destination chain to claim the user's funds. Alternatively, user reveals the secret on destination to claim their funds if needed.
+    </Card>
+
+    <Card title="redeem () - Solver" icon="check-circle" horizontal="true">
+      Solver reveals the secret (transmitted by the user via off-chain channels) on both source and destination chains to claim their reward and unlock the user's funds.
     </Card>
 
     <Card title="refund ()" icon="arrow-down-to-line" horizontal="true">

@@ -1,17 +1,17 @@
 <Steps>
-  <Step title="User Derives Secret">
-    The user derives a secret using the recoverable mechanism and creates an HTLC for Solver(AB) on Chain A.
+  <Step title="User Derives Secret and Locks">
+    The user derives a secret using the recoverable mechanism and locks funds on Chain A using the hashlock of that secret.
   </Step>
-  <Step title="Solver(AB) Locks Funds">
-    Once detected, Solver(AB) creates an HTLC for Solver(BC) on Chain B using the same hashlock.
+  <Step title="Solver(AB) Locks">
+    Solver(AB) observes the lock on Chain A and creates an HTLC for Solver(BC) on Chain B using the same hashlock.
   </Step>
   <Step title="Solver(BC) Locks Funds">
-    Solver(BC) then creates an HTLC for the user on Chain C using the same hashlock.
+    Solver(BC) observes Solver(AB)’s lock and creates an HTLC for the user on Chain C using the same hashlock.
   </Step>
-  <Step title="Secret Reveal">
-    The user reveals the secret on Chain C, enabling all participants to unlock their funds across the chain sequence.
+  <Step title="Secret Transmission Chain">
+    The user signs and transmits the derived secret to Solver(AB). Solver(AB) forwards the secret to Solver(BC).
   </Step>
-  <Step title="Unlocks">
-    Solver(BC) releases the user’s funds on Chain C and claims funds on Chain B. Solver(AB) claims funds on Chain A.
+  <Step title="Multi-Hop Reveal">
+    Solver(BC) reveals the secret on Chain C to unlock user funds. Solver(BC) reveals on Chain B to unlock Solver(AB)’s funds. Solver(AB) reveals on Chain A to claim their reward. All parties receive their funds.
   </Step>
 </Steps>

@@ -18,8 +18,14 @@ icon: browser
       The state of the destination chain should be read from a Light Client if one exists; if not, it should be read from multiple RPC providers.
     </Note>
   </Step>
-  <Step title="Reveal secret to unlock funds">
-    Call `redeem()` on the destination chain with the derived secret to claim funds. The Solver will use the same secret to unlock on the source chain.
+  <Step title="Transmit signature with secret to Solver">
+    Sign a message containing the derived secret and transmit this signed message to the Solver or any available actor. This allows them to use the secret to unlock funds on both chains without requiring further user interaction.
+    <Note>
+      This signature transmission can happen via off-chain channels (WebSocket, API, etc.). The signature includes the actual secret, which the Solver can now use.
+    </Note>
+  </Step>
+  <Step title="Solver uses secret to release funds">
+    The Solver reveals the secret on the destination chain to unlock the user's funds and on the source chain to claim their own funds. Both the user and Solver can now complete their side of the transaction.
   </Step>
 </Steps>
 

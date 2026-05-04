@@ -4,63 +4,63 @@ description: 'Describes potential failure scenarios and how the protocol handles
 icon: 'light-emergency'
 ---
 
-### Solver Fails to Act on the User's Commitment/Intent
-In a rare scenario where the winning Solver fails to act on the User's commitment, other auction participants have a chance to lock instead of the winner. If all participants fail to act, the User only needs to wait for the timelock period (usually ~15 minutes) to receive their funds back.
+### Solver Fails to Act on the User's Lock
+In a rare scenario where the winning Solver fails to act on the User's lock, other auction participants have a chance to lock instead of the winner. If all participants fail to act, the User only needs to wait for the timelock period (usually ~15 minutes) to receive their funds back.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
 ```mermaid
 sequenceDiagram
-    participant P1 as User
+    participant User
     participant SC as Source Chain
-    participant P2 as Solver
+    participant Solver
     participant DC as Destination Chain
 
 	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
+    User->>SC: lock() with hashlock
+    SC-->>Solver: TokenLocked
     
-    Note over P1,SC: Timelock passes
-    P1->>SC: refund()
-    SC-->>P1: TokenRefunded
+    Note over User,SC: Timelock passes
+    User->>SC: refund()
+    SC-->>User: TokenRefunded
 ```
 </Accordion>
 
-### User Fails to Act on the Solver's Lock
+### User Fails to Transmit Secret to Solver
 
-If the User does not act on the lock created by the Solver, both parties can refund their funds after the timelock period expires.
+If the User does not transmit the derived secret to the Solver in time, both parties can refund their funds after the timelock period expires.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
 ```mermaid
 sequenceDiagram
-    participant P1 as User
+    participant User
     participant SC as Source Chain
-    participant P2 as Solver
+    participant Solver
     participant DC as Destination Chain
 
 	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>DC: lock()
-    DC-->>P2: TokenLocked
+    User->>SC: lock() with hashlock
+    SC-->>Solver: TokenLocked
+    Solver->>DC: lock() with same hashlock
+    DC-->>User: TokenLocked
     
-    Note over P1,SC: Timelock passes
-    P1->>SC: refund()
-    SC-->>P1: TokenRefunded
+    Note over User,SC: Timelock passes
+    User->>SC: refund()
+    SC-->>User: TokenRefunded
 		
-		Note over P2,DC: Timelock passes
-    P2->>DC: refund()
-    DC-->>P2: TokenRefunded
+		Note over Solver,DC: Timelock passes
+    Solver->>DC: refund()
+    DC-->>Solver: TokenRefunded
 ```
 
 </Accordion>
 
 ### Solver Fails to Release the User's Funds
 
-In scenarios where the Solver releases their funds but fails to release the User's funds, the protocol provides two mechanisms:
+In scenarios where the Solver releases their own funds but fails to release the User's funds, the protocol provides two mechanisms:
 
-1. **Manual Redemption**: The User captures the secret revealed when the Solver redeemed on the source chain. The User can then use this secret to manually redeem their own funds on the destination chain, bypassing the Solver's failure.
+1. **Manual Redemption**: The User already possesses the secret (they transmitted it to the Solver). If the Solver fails to redeem on the destination chain, the User can directly use the secret to manually redeem their own funds on the destination chain, bypassing the Solver's failure.
 
 2. **Reward/Slash Mechanism**: The Auction Manager tracks Solver reliability and reputation. Other solvers can redeem on behalf of the user and earn a reward for completing the swap. The original solver who failed is penalized through reputation loss and potential slashing, reducing their ability to win future auctions and incentivizing reliable behavior.
 
@@ -68,51 +68,49 @@ In scenarios where the Solver releases their funds but fails to release the User
 
 ```mermaid
 sequenceDiagram
-    participant P1 as User
+    participant User
     participant SC as Source Chain
-    participant P2 as Solver
+    participant Solver
     participant DC as Destination Chain
 
 	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>DC: lock()
-    DC-->>P1: TokenLocked
-    P1->>SC: addLock()
-    SC-->>P2: TokenLockAdded
-    P2->>SC: redeem()
-	  SC-->>P1: TokenRedeemed
-    P1->>DC: redeem()
-    DC-->>P1: TokenRedeemed
+    User->>SC: lock() with hashlock
+    SC-->>Solver: TokenLocked
+    Solver->>DC: lock() with same hashlock
+    DC-->>User: TokenLocked
+    User->>Solver: sign(secret)
+    Solver->>SC: redeem(secret)
+    SC-->>Solver: TokenRedeemed
+    User->>DC: redeem(secret)
+    DC-->>User: TokenRedeemed
 ```
 </Accordion>
 
 ### Solver Fails to Release Any Funds
 
-If the Solver fails to release any funds, the User can wait for the timelock period to expire and then refund their funds.
+If the Solver fails to release any funds, both the User and Solver can wait for the timelock period to expire and then refund their funds.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
 ```mermaid
 sequenceDiagram
-    participant P1 as User
+    participant User
     participant SC as Source Chain
-    participant P2 as Solver
+    participant Solver
     participant DC as Destination Chain
 
 	
-    P1->>SC: commit()
-    SC-->>P2: TokenCommitted
-    P2->>DC: lock()
-    DC-->>P1: TokenLocked
-    P1->>SC: addLock()
-    SC-->>P2: TokenLockAdded
-    Note over P2,DC: Timelock passes
-    P2->>DC: refund()
-	  DC-->>P2: TokenRefunded
-	  Note over P1,SC: Timelock passes
-    P1->>SC: refund()
-    SC-->>P1: TokenRefunded
+    User->>SC: lock() with hashlock
+    SC-->>Solver: TokenLocked
+    Solver->>DC: lock() with same hashlock
+    DC-->>User: TokenLocked
+    User->>Solver: sign(secret)
+    Note over Solver,DC: Timelock passes
+    Solver->>DC: refund()
+    DC-->>Solver: TokenRefunded
+    Note over User,SC: Timelock passes
+    User->>SC: refund()
+    SC-->>User: TokenRefunded
 ```
 
 </Accordion>

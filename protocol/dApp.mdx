@@ -12,15 +12,20 @@ icon: browser
 
 The [TRAIN Bridge dApp](https://app.train.tech) serves as the central interface for seamless cross-chain transactions. It submits user intents to the centralized [Auction Manager](/protocol/auction), receives the winning Solver quote, and orchestrates the [HTLC flow with recoverable secret generation](/protocol/atomic-swaps-secret_gen).
 
-The dApp has **three** main responsibilities:
+The dApp has **four** main responsibilities:
 
 1. Accept user swap intent and submit it to the [Auction Manager](/protocol/auction)
-2. Display the winning Solver quote and allow the user to commit funds (specifying the winning Solver)
-3. Execute the [HTLC flow](/protocol/atomic-swaps-secret_gen) (derive secret, lock funds, observe destination lock, reveal secret)
+2. Display the winning Solver quote and allow the user to initiate the swap (specifying the winning Solver)
+3. Execute the [HTLC flow](/protocol/atomic-swaps-secret_gen):
+   - Derive a secret from the user's wallet signature
+   - Lock funds on the source chain with the derived hashlock
+   - Observe the Solver's lock on the destination chain
+   - Sign and transmit the derived secret to the Solver so they can unlock funds on both chains
+4. Optionally monitor and verify that funds are unlocked on both chains. The Solver is economically incentivized to redeem on the destination chain quickly because a reward is reserved for whoever completes that transaction—if they delay, any other actor can step in and claim it.
 
 ### Observing the Destination Network
 
-The dApp must observe the destination lock created by the Solver and provide the `hashlock` to the User to complete the Atomic Swap process. The dApp can observe this transaction through the following methods, listed in order of priority:
+The dApp must observe the destination lock created by the Solver to verify the swap is proceeding correctly. The dApp can observe this transaction through the following methods, listed in order of priority:
 
 1. Bootstrap a Light Client (e.g., [Helios](https://github.com/a16z/helios)) for the destination chain and read the lock state from it
 2. If no Light Client is available, read and verify the lock state from multiple RPC providers
