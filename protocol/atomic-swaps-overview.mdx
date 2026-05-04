@@ -32,9 +32,6 @@ Atomic Swaps (HTLC - Hashed Time Lock Contract) enable peer-to-peer asset exchan
 Despite their potential, HTLCs have proven impractical for real-world bridging due to three main issues:
 
 - **Secret Management**: Users must generate and securely manage a Secret until the counterparty completes their transaction.
-- **Claim Transaction on the Destination Network**: Users may lack assets on the Destination Network, especially if it's their first time interacting with that Network.
 - **Liveness**: Users must maintain the state of the bridging process locally and actively monitor and respond to counterparty transactions.
 
-These challenges significantly impact the User experience and create barriers to adoption. The requirement for Users to have assets on the Destination Network is particularly problematic. It creates a chicken-and-egg situation for those trying to bridge to a new Network for the first time.
-
-Additionally, having the User manage the Secret creates a dependency issue. If the User closes the browser, clears the cache, or loses access to the Secret, the transaction flow cannot be recovered from the chain data.
+These challenges significantly impact the User experience and create barriers to adoption. The requirement for Users to manage the Secret creates a dependency issue. If the User closes the browser, clears the cache, or loses access to the Secret, the transaction flow cannot be recovered from the chain data.
