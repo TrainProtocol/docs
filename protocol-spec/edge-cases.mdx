@@ -5,7 +5,7 @@ icon: 'light-emergency'
 ---
 
 ### Solver Fails to Act on the User's Lock
-In a rare scenario where the winning Solver fails to act on the User's lock, other auction participants have a chance to lock instead of the winner. If all participants fail to act, the User only needs to wait for the timelock period (usually ~15 minutes) to receive their funds back.
+In a rare scenario where the selected Solver fails to act on the User's lock, the User only needs to wait for the timelock period (usually ~15 minutes) to receive their funds back.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 
@@ -62,7 +62,7 @@ In scenarios where the Solver releases their own funds but fails to release the 
 
 1. **Manual Redemption**: The User already possesses the secret (they transmitted it to the Solver). If the Solver fails to redeem on the destination chain, the User can directly use the secret to manually redeem their own funds on the destination chain, bypassing the Solver's failure.
 
-2. **Reward/Slash Mechanism**: The Auction Manager tracks Solver reliability and reputation. Other solvers can redeem on behalf of the user and earn a reward for completing the swap. The original solver who failed is penalized through reputation loss and potential slashing, reducing their ability to win future auctions and incentivizing reliable behavior.
+2. **Reward Mechanism**: Other actors can redeem on behalf of the user and earn a reward for completing the swap. The original Solver loses their reward by failing to act in time.
 
 <Accordion title="Sequence Diagram" icon="brake-warning">
 

@@ -44,9 +44,7 @@
                   "protocol/atomic-swaps-secret_gen"
                 ]
               },
-              "protocol/multi-hop",
               "protocol/slashing",
-              "protocol/auction",
               "protocol/dApp"
             ]
           }
@@ -62,7 +60,6 @@
               "protocol-spec/edge-cases",
               "protocol-spec/core",
               "protocol-spec/reward-slashing",
-              "protocol-spec/auction",
               "protocol-spec/HKDF",
               {
                 "group": "Implementation",

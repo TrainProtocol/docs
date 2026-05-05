@@ -4,7 +4,7 @@ description: 'Outlines the main protocol model for performing atomic swaps betwe
 icon: table-tree
 ---
 
-The protocol model relies on atomic swaps with recoverable secret generation for parties exchanging assets across different chains. The model outlines the core flow of assets and actions that should be taken by each party for a successful asset exchange. Depending on the source and destination, and whether there is a party willing to exchange on those chains, either the [Standard flow](#standard-flow) or [Multi-hop flow](#multi-hop-flow) is used.
+The protocol model relies on atomic swaps with recoverable secret generation for parties exchanging assets across different chains. The model outlines the core flow of assets and actions that should be taken by each party for a successful asset exchange. The protocol uses the [Standard flow](#standard-flow) for asset exchange between parties.
 
 ### Standard flow
 
@@ -47,6 +47,7 @@ sequenceDiagram
 ```
 </Accordion>
 
+{/*
 ### Multi-hop flow
 
 When transferring funds from a source chain to a destination chain is not possible due to the absence of a party directly linking the two, a multi-hop approach is used, with the chain length denoted as $n$. In this process, the user derives a secret and locks funds on the source chain to the first Solver. Each Solver in the sequence subsequently locks funds for the next Solver in the chain, until the final Solver on the destination chain locks funds for the user. The final Solver on the destination chain locks funds with the longest timelock, set to $T + 2^{n-1}\Delta$, where $T$ is the current timestamp and $\Delta$ is a reasonable duration (e.g., 15 minutes). All locks use the same hashlock derived from the user's secret, ensuring atomic execution across all chains.
@@ -87,3 +88,4 @@ sequenceDiagram
 ```
 
 </Accordion>
+*/}
