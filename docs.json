@@ -41,14 +41,7 @@
                 "icon": "swap",
                 "pages": [
                   "protocol/atomic-swaps-overview",
-                  "protocol/atomic-swaps-secret_gen",
-                  {
-                    "group": "Custom Flows (TRAIN)",
-                    "icon": "puzzle",
-                    "pages": [
-                      "protocol/atomic-swaps/custom-flows/aztec"
-                    ]
-                  }
+                  "protocol/atomic-swaps-secret_gen"
                 ]
               },
               "protocol/multi-hop",
