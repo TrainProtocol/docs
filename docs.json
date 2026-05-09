@@ -113,7 +113,7 @@
     "primary": {
       "type": "button",
       "label": "Try TRAIN",
-      "href": "https://app.train.tech"
+      "href": "https://testnet.train.tech/"
     }
   },
   "seo": {
@@ -140,7 +140,7 @@
           },
           {
             "label": "Bridge App",
-            "href": "https://app.train.tech"
+            "href": "https://testnet.train.tech/"
           },
           {
             "label": "Docs",
