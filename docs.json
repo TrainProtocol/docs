@@ -47,6 +47,12 @@
               "protocol/slashing",
               "protocol/dApp"
             ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "brand-assets"
+            ]
           }
         ]
       },
@@ -120,7 +126,7 @@
     "metatags": {
       "og:title": "TRAIN Protocol Documentation",
       "og:description": "Access the complete documentation of the TRAIN Protocol – your solution for decentralized and trustless cross-chain asset interoperability.",
-      "og:logo": "/logo/dark.svg"
+      "og:logo": "/logo/logo.svg"
     },
     "indexing": "navigable"
   },
