@@ -28,8 +28,13 @@
                   "protocol/usage-swap",
                   "protocol/usage-add-new-network"
                 ]
-              },
-              "protocol/contracts"
+              }
+            ]
+          },
+          {
+            "group": "Deployments",
+            "pages": [
+              "deployments"
             ]
           },
           {
@@ -45,7 +50,9 @@
                 ]
               },
               "protocol/slashing",
-              "protocol/dApp"
+              "protocol/dApp",
+              "protocol/gasless",
+              "research/cross-chain-trading"
             ]
           },
           {
@@ -95,11 +102,6 @@
   "logo": {
     "light": "/logo/logo.svg",
     "dark": "/logo/logo.svg"
-  },
-  "api": {
-    "mdx": {
-      "server": "https://atomic-dev.layerswap.cloud/"
-    }
   },
   "appearance": {
     "default": "dark",

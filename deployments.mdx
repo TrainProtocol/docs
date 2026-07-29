@@ -1,0 +1,172 @@
+---
+title: 'Deployments'
+description: 'Live and in-progress TRAIN Protocol contract deployments across every supported network'
+icon: file-lock
+---
+
+TRAIN's HTLC contracts are deployed deterministically wherever possible (CREATE2 on EVM chains, native contract-ID determinism on Fuel), so all EVM chains share the same `Train` contract address. Deployment source of truth lives in the [contracts repository](https://github.com/TrainProtocol/contracts) — networks considered stable enough to be audited live on `main`, everything else is developed on its own `main-add-<network>` branch until it clears an audit. To learn how the `TrainRouter` powers gasless swaps, see [Gasless Flows](/protocol/gasless).
+
+<Tabs>
+  <Tab title="Mainnets">
+    ### Atomic Swap (HTLC) Contracts
+
+    <AccordionGroup>
+      <Accordion title="EVM: Ethereum">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://etherscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: Arbitrum One">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://arbiscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: OP Mainnet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://optimistic.etherscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: Base">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://basescan.org/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: Polygon PoS">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://polygonscan.com/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: BSC">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://bscscan.com/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75#code) |
+      </Accordion>
+      <Accordion title="EVM: Robinhood">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://robinhoodchain.blockscout.com/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+      </Accordion>
+      <Accordion title="CairoVM: Starknet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x60111a1a10c8669c899ea74a7a155891887b3dd906e7f3eb912907cac50d66a` | [View](https://voyager.online/contract/0x60111a1a10c8669c899ea74a7a155891887b3dd906e7f3eb912907cac50d66a) |
+      </Accordion>
+      <Accordion title="FuelVM: Fuel Ignition">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x869027a726e61ee274e9612b8fbccafa7188e1d73f47dec76aeba4a778964b68` | [View](https://app.fuel.network/contract/0x869027a726e61ee274e9612b8fbccafa7188e1d73f47dec76aeba4a778964b68/code) |
+      </Accordion>
+      <Accordion title="Tempo">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0xf37846fD2D6fAC5E4F7597463a1c4f30397A9e29` | [View](https://explore.tempo.xyz/address/0xf37846fD2D6fAC5E4F7597463a1c4f30397A9e29) |
+      </Accordion>
+    </AccordionGroup>
+  </Tab>
+  <Tab title="Testnets">
+    ### Atomic Swap (HTLC) Contracts
+
+    <AccordionGroup>
+      <Accordion title="EVM: Ethereum Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://sepolia.etherscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://sepolia.etherscan.io/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://sepolia.etherscan.io/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: Arbitrum Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://sepolia.arbiscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://sepolia.arbiscan.io/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://sepolia.arbiscan.io/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: Base Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://sepolia.basescan.org/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://sepolia.basescan.org/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://sepolia.basescan.org/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: OP Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://sepolia-optimism.etherscan.io/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://sepolia-optimism.etherscan.io/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://sepolia-optimism.etherscan.io/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: BSC Testnet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://testnet.bscscan.com/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://testnet.bscscan.com/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://testnet.bscscan.com/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: Linea Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://sepolia.lineascan.build/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://sepolia.lineascan.build/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://sepolia.lineascan.build/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: Monad Testnet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75` | [View](https://testnet.monadscan.com/address/0x877a7629BA8EfA6dd79057ab9105FdE3aDe93d75) |
+        | TrainRouter | `0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a` | [View](https://testnet.monadscan.com/address/0x0d117b12744E1A8b4980c3BdC3542Ad53C27E33a) |
+        | ConstantPayoutCurve | `0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE` | [View](https://testnet.monadscan.com/address/0xFF9d783c6cB8294a4fa4d1556752c3EAF3E20DEE) |
+      </Accordion>
+      <Accordion title="EVM: Tron Nile">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `TKPCfMErMoBpr7YWcWJyNM2aG7EcAn6srj` | [View](https://nile.tronscan.org/#/contract/TKPCfMErMoBpr7YWcWJyNM2aG7EcAn6srj) |
+        | TrainRouter | `TY6hNw9Kvx6AcRJAAk9M9mCxZzuaSbQ3fG` | [View](https://nile.tronscan.org/#/contract/TY6hNw9Kvx6AcRJAAk9M9mCxZzuaSbQ3fG) |
+        | ConstantPayoutCurve | `TSHgwbab9XGjcGdQLdDAEQMgXy6QpnKE97` | [View](https://nile.tronscan.org/#/contract/TSHgwbab9XGjcGdQLdDAEQMgXy6QpnKE97) |
+      </Accordion>
+      <Accordion title="Tempo Moderato">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0xf37846fD2D6fAC5E4F7597463a1c4f30397A9e29` | [View](https://explore.testnet.tempo.xyz/address/0xf37846fD2D6fAC5E4F7597463a1c4f30397A9e29) |
+        | ConstantPayoutCurve | `0xe07d9f773112388E0126B31611A4A56Cf6a9E3Fa` | [View](https://explore.testnet.tempo.xyz/address/0xe07d9f773112388E0126B31611A4A56Cf6a9E3Fa) |
+      </Accordion>
+      <Accordion title="CairoVM: Starknet Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x4ae1ae0dd1dd01be306725ab8de15707241284c8dd49cbaf37bcf845bf2d20b` | [View](https://sepolia.voyager.online/contract/0x4ae1ae0dd1dd01be306725ab8de15707241284c8dd49cbaf37bcf845bf2d20b) |
+        | TrainRouter | `0x1049d123293e9c182397ba1b5de795ee35c9ca0a1f2fecfec2eca14e38cecc8` | [View](https://sepolia.voyager.online/contract/0x1049d123293e9c182397ba1b5de795ee35c9ca0a1f2fecfec2eca14e38cecc8) |
+        | ConstantPayoutCurve | `0x27e92c85cf5da7861549ceba60096737a773f9b94f49046604ff0a0035cc351` | [View](https://sepolia.voyager.online/contract/0x27e92c85cf5da7861549ceba60096737a773f9b94f49046604ff0a0035cc351) |
+      </Accordion>
+      <Accordion title="FuelVM: Fuel Sepolia">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x869027a726e61ee274e9612b8fbccafa7188e1d73f47dec76aeba4a778964b68` | [View](https://app-testnet.fuel.network/contract/0x869027a726e61ee274e9612b8fbccafa7188e1d73f47dec76aeba4a778964b68/code) |
+        | ConstantPayoutCurve | `0xfc598e7d022590a0eecc2f58c9ba865ace7c2ca5acae881dced5f2dbb37eb33b` | [View](https://app-testnet.fuel.network/contract/0xfc598e7d022590a0eecc2f58c9ba865ace7c2ca5acae881dced5f2dbb37eb33b/code) |
+      </Accordion>
+      <Accordion title="SVM: Solana Devnet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `2cQYFAiud2LBg3r6MxKPJ1oS83yyrRwDsgxQSwhL97LJ` | [View](https://explorer.solana.com/address/2cQYFAiud2LBg3r6MxKPJ1oS83yyrRwDsgxQSwhL97LJ?cluster=devnet) |
+        | ConstantPayoutCurve | `Dp4ReoYGG8VRXpnst4vT8g6UDVwUicJwAuiikQWk8HMF` | [View](https://explorer.solana.com/address/Dp4ReoYGG8VRXpnst4vT8g6UDVwUicJwAuiikQWk8HMF?cluster=devnet) |
+      </Accordion>
+      <Accordion title="Aztec Testnet">
+        | Contract | Address | Explorer |
+        | --- | --- | --- |
+        | Train | `0x0483a6a15a6275c9482dbf8aa78aa96fe9291d60b08841a35739ebba4c33d9e6` | [View](https://aztecscan.xyz/contracts/instances/0x0483a6a15a6275c9482dbf8aa78aa96fe9291d60b08841a35739ebba4c33d9e6) |
+        | ConstantPayoutCurve | `0x0f39abe60a09d7750b0f3fc1dada72f151d815f10f63a4413db9a9e2cb5d2fc7` | [View](https://aztecscan.xyz/contracts/instances/0x0f39abe60a09d7750b0f3fc1dada72f151d815f10f63a4413db9a9e2cb5d2fc7) |
+      </Accordion>
+    </AccordionGroup>
+  </Tab>
+  <Tab title="Roadmap">
+    Networks below have contract implementations under active development but no live deployment yet.
+
+    | Network | Status |
+    | --- | --- |
+    | TON | WIP |
+    | Stacks | WIP |
+    | Bitcoin | WIP |
+    | Sui | WIP |
+    | Aptos | WIP |
+    | XRP | WIP |
+    | Zcash | WIP |
+  </Tab>
+</Tabs>
