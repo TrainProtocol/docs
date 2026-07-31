@@ -32,10 +32,11 @@ npx mintlify dev
 
 Deployment data in `deployments.mdx` traces back to the sibling `contracts` repo (`TrainProtocol/contracts`, checked out locally as a sibling directory to this one). Its branch model:
 
-- `main` — audited, stable chains only.
-- `main-add-<network>` — one branch per network. The actively maintained ones (as of 2026-07) are `main-add-evm`, `main-add-evm-tempo`, `main-add-solana`, `main-add-fuel`, `main-add-starknet`, `main-add-aztec`; other network branches are WIP with no live deployment.
+- `main` — carries the latest state of every production-track network (as of 2026-07-31: EVM incl. Tempo and Tron, Fuel, Starknet, Solana, Aztec). Early-stage networks (TON, Stacks, Bitcoin, Sui, Aptos, XRP, Zcash) live only on their `main-add-<network>` branch; per-network branches remain the active dev lanes after merging too.
+- **The contracts are not audited** — the repo explicitly removed all "audited" claims (2026-07-31). Never describe `main` or any deployment as "audited" in these docs.
 - **Always `git fetch origin` first and read from `origin/<branch>`** — local checkouts can be months behind (this bit us once: stale local branches produced outdated addresses).
-- Testnet addresses come from each chain's committed reports: `chains/<chain>/DEPLOYMENTS.md` (EVM, Fuel) and/or `chains/<chain>/docs/*report*.md` e2e reports (Solana, Starknet, Aztec). Mainnet addresses are confirmed by the team, not by repo docs (which lag).
+- Address source of truth: the **root `README.md` on `main`** has a "Deployments — current release" section aggregating every chain's current addresses. Per-chain records: `chains/evm/solidity/DEPLOYMENTS.md`, `chains/fuel/DEPLOYMENTS.md`, `chains/starknet/docs/mainnet-deployment.md`, `chains/solana/README.md` + `docs/` reports, `chains/aztec/README.md` + `docs/` reports.
+- Release model: deterministic deploys keyed by a versioned salt (v3 = CreateX, `keccak256('train.protocol.v3')`) — **every release rotates all addresses**; mainnet scope is `Train` only (Router/PayoutCurve are testnet-only, locks pass `payoutCurve = 0`).
 - Branch names don't always mean what they look like: a newer-looking or differently-named branch (e.g. an `aztec-alpha/*` prefix) isn't automatically the active one — confirm which branch is actually "real" before sourcing content from it.
 
 **Important:** that repo's own README/DEPLOYMENTS.md files can lag real-world deployment status — during the 2026-07 docs refresh, `main-add-evm`'s `DEPLOYMENTS.md` said mainnet "has not been deployed yet" while mainnet was in fact already live with the same (CREATE2-deterministic) address. Treat those docs as a technical reference for contract design, not as the final word on what's live — confirm current mainnet/testnet status and addresses with the team before publishing them here.

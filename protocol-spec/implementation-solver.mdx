@@ -1,35 +1,36 @@
 ---
 title: 'Solver Implementation'
-description: 'Describes the protocol implementation for the Solcer'
+description: 'Describes the protocol implementation for the Solver'
 icon: network-wired
 ---
 
 <Steps>
   <Step title="Monitor the source chain">
-    Subscribe to `TokenLocked` events to detect any locks made to your address with a hashlock.
+    Subscribe to `UserLocked` events to detect any locks made to your address with a hashlock.
   </Step>
   <Step title="Lock funds on the destination chain">
-    - When a lock is detected, call `lock()` on the destination chain and pass the same `hashlock` with `timelock` of [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
+    - When a lock is detected, call `solverLock()` on the destination chain and pass the same `hashlock` with `timelock` of [$T + 2\Delta$](/protocol-spec/model/#standard-flow), along with the reward and `rewardTimelock`.
+    - Solver locks are keyed by **(hashlock, your solver address)** — you get exactly one slot per hashlock, ever. A blind retry reverts with `SolverLockAlreadyExists` instead of double-funding the swap; if your lock was refunded (e.g. a botched fill), re-filling the same hashlock requires a different solver address.
   </Step>
   <Step title="Verify the lock on source chain">
-    - Monitor the source chain for the `TokenLocked` event details (or use the `getDetails()` function) on the detected lock.
+    - Monitor the source chain for the `UserLocked` event details (or use the `getUserLock(hashlock)` function) on the detected lock.
     - Verify that the `hashlock` matches what the user used.
     - Verify that the `timelock` provides sufficient time to act, ensuring it is at least [$T + \Delta$](/protocol-spec/model/#standard-flow).
-    - Verify that the `Id` is consistent and valid.
+    - Verify that the `payoutCurve` is one you recognize (only fill locks whose curve you trust — the curve determines the redeem payout).
   </Step>
   <Step title="Receive secret from user">
     The user will sign and transmit the derived secret to you via off-chain channels. Verify that when hashed, this secret matches the hashlock on both chains.
   </Step>
   <Step title="Complete the exchange">
-    - Once you receive the secret, call `redeem()` on the destination chain to unlock the user's funds. <strong>You are incentivized to do this quickly because a reward is reserved for whoever completes this transaction. If you delay, another actor can call redeem and claim the reward instead.</strong>
-    - Call `redeem()` on the source chain to claim your primary fee/reward.
+    - Once you receive the secret, call `redeemSolver()` on the destination chain to unlock the user's funds. <strong>You are incentivized to do this quickly: before the `rewardTimelock` expires, the reward routes to you; after it expires, any actor can redeem and claim the reward instead.</strong>
+    - Call `redeemUser()` on the source chain to claim your primary fee/reward.
     - Pass in the secret value received from the user.
   </Step>
 </Steps>
 
 <Warning>
-[Edge Case: User Fails to Act on the Solver’s Lock](/protocol-spec/edge-cases#user-fails-to-act-on-the-solvers-lock)
+[Edge Case: User Fails to Act on the Solver's Lock](/protocol-spec/edge-cases#user-fails-to-act-on-the-solvers-lock)
 
-- If the commitment is not locked, wait for the `timelock` to expire.
-- Call `refund()` on the destination chain to reclaim your funds.
+- If the source lock is never completed, wait for the `timelock` to expire.
+- Call `refundSolver()` on the destination chain to reclaim your funds and reward.
 </Warning>

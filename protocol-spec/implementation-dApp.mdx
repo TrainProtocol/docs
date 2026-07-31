@@ -9,11 +9,11 @@ icon: browser
     Using the [recoverable secret generation mechanism](/protocol/atomic-swaps-secret_gen), derive a secret from the user's wallet signature, source chain, destination chain, and timelock parameters. Hash the secret to create the hashlock.
   </Step>
   <Step title="Lock funds on source chain">
-    Call the `lock()` function to lock funds with the derived hashlock and a timelock of [$T + \Delta$](/protocol-spec/model/#standard-flow).
+    Call the `userLock()` function to lock funds with the derived hashlock and a timelock of [$T + \Delta$](/protocol-spec/model/#standard-flow). For a gasless experience, sign an intent and let a relayer submit it through the [TrainRouter](/protocol/gasless) instead.
   </Step>
   <Step title="Monitor the destination chain">
-    - Watch for the `TokenLocked` event or use the `Id` on the destination chain by calling `getDetails()`.
-    - Verify that the `hashlock` of the `HTLC` on the destination chain matches your derived hashlock and provides sufficient time, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
+    - Watch for the `SolverLocked` event or query the lock directly by calling `getSolverLock(hashlock, solver)`.
+    - Verify that the `hashlock` of the lock on the destination chain matches your derived hashlock and provides sufficient time, ensuring it is at least [$T + 2\Delta$](/protocol-spec/model/#standard-flow).
     <Note>
       The state of the destination chain should be read from a Light Client if one exists; if not, it should be read from multiple RPC providers.
     </Note>
@@ -33,19 +33,19 @@ icon: browser
 [Edge Case: Solver Fails to Act on the User’s Commitment/Intent](/protocol-spec/edge-cases#solver-fails-to-act-on-the-users-commitment-intent)
 
 - Wait for the `timelock` to expire.
-- Call `refund()` on the source chain to reclaim your funds.
+- Call `refundUser()` on the source chain to reclaim your funds.
 </Warning>
 
 <Warning>
 [Edge Case: Solver Fails to Release Any Funds](/protocol-spec/edge-cases#solver-fails-to-release-any-funds)
 
 - Wait for the `timelock` to expire.
-- Call `refund()` on the source chain to reclaim your funds.
+- Call `refundUser()` on the source chain to reclaim your funds.
 </Warning>
 
 <Warning>
 [Edge Case: Solver Fails to Release the User’s Funds](/protocol-spec/edge-cases#solver-fails-to-release-the-users-funds)
 
-- If funds are not released on the destination chain, watch the source chain for the `TokenRedeemed` event (or `getDetails()` function).
-- Once detected, capture the `secret` and call `redeem()` on the destination chain.
+- If funds are not released on the destination chain, watch the source chain for the `UserRedeemed` event (or the `getUserLock(hashlock)` function).
+- Once detected, capture the `secret` and call `redeemSolver()` on the destination chain.
 </Warning>

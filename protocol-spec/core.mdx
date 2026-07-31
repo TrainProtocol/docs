@@ -1,12 +1,12 @@
 ---
 title: 'Core'
-description: 'Start deploying a trustless bridge on any rollup/chain in under 5 minutes'
+description: 'The core HTLC contract interface of the TRAIN protocol'
 icon: engine
 ---
 
 <Tabs>
   <Tab title="Overview">
-    The core of the protocol relies on the HTLC contract. This contract is responsible for locking and unlocking funds based on specific conditions.
+    The core of the protocol relies on the HTLC contract (`Train`). This contract is responsible for locking and unlocking funds based on specific conditions. All locks are keyed by the **hashlock** — `sha256(secret)` — and every network implements the same lifecycle.
 
     <Frame>
       <img width="300" src="/images/htlc.png" />
@@ -14,190 +14,176 @@ icon: engine
 
     ### Core Functions
 
-    <Card title="lock ()" icon="lock" horizontal="true">
-      User creates an HTLC on the source chain with a hashlock derived from the recoverable secret generation mechanism. This locks the user's funds for the specified Solver.
+    <Card title="userLock ()" icon="lock" horizontal="true">
+      User creates an HTLC on the source chain with a hashlock derived from the recoverable secret generation mechanism. This locks the user's funds for the specified Solver. A gasless variant, `userLockFor`, lets a relayer fund and submit the lock attributed to the user (see [Gasless Flows](/protocol/gasless)).
     </Card>
 
-    <Card title="redeem ()" icon="lock-open" horizontal="true">
-      Solver reveals the secret on the destination chain to claim the user's funds. Alternatively, user reveals the secret on destination to claim their funds if needed.
+    <Card title="solverLock ()" icon="lock-keyhole" horizontal="true">
+      Solver locks matching funds on the destination chain with the same hashlock, plus a reward secured by a `rewardTimelock`. Solver locks are keyed by **(hashlock, solver address)** — each solver gets exactly one permanent slot per hashlock (`SolverLockAlreadyExists` guard), so a blind retry can never double-fund the same swap, and no one can squat another solver's slot.
     </Card>
 
-    <Card title="redeem () - Solver" icon="check-circle" horizontal="true">
-      Solver reveals the secret (transmitted by the user via off-chain channels) on both source and destination chains to claim their reward and unlock the user's funds.
+    <Card title="redeemUser () / redeemSolver ()" icon="lock-open" horizontal="true">
+      Anyone holding the secret can redeem: `redeemSolver` releases the Solver's destination lock to the user (paying the reward), and `redeemUser` releases the user's source lock to the Solver. Redeeming reveals the secret on-chain, which atomically unlocks both sides.
     </Card>
 
-    <Card title="refund ()" icon="arrow-down-to-line" horizontal="true">
-      Allows the original sender to reclaim their locked funds after the timelock expires if the exchange wasn't completed.
+    <Card title="refundUser () / refundSolver ()" icon="arrow-down-to-line" horizontal="true">
+      Return locked funds to the `refundTo` address after the timelock expires if the exchange wasn't completed. The user lock's recipient may refund at any time. A solver whose lock was refunded cannot re-lock the same hashlock from the same address — a retry requires a different solver address.
     </Card>
   </Tab>
 
   <Tab title="Code">
-    Implementation of the HTLC core contracts can be found in the [TRAIN contracts repo](https://github.com/trainprotocol/contracts). Audited networks live on `main`: [EVM](https://github.com/trainprotocol/contracts/tree/main/chains/evm), [Solana](https://github.com/trainprotocol/contracts/tree/main/chains/solana), [Starknet](https://github.com/trainprotocol/contracts/tree/main/chains/starknet), [Fuel](https://github.com/trainprotocol/contracts/tree/main/chains/fuel). Networks still in development live on their own `main-add-<network>` branch until audited, e.g. [Aztec](https://github.com/trainprotocol/contracts/tree/main-add-aztec/chains/aztec) and [Sui](https://github.com/trainprotocol/contracts/tree/main-add-sui/chains/sui).
+    Implementation of the HTLC core contracts can be found in the [TRAIN contracts repo](https://github.com/trainprotocol/contracts). `main` carries every production-track network: [EVM](https://github.com/trainprotocol/contracts/tree/main/chains/evm), [Starknet](https://github.com/trainprotocol/contracts/tree/main/chains/starknet), [Fuel](https://github.com/trainprotocol/contracts/tree/main/chains/fuel), [Solana](https://github.com/trainprotocol/contracts/tree/main/chains/solana), and [Aztec](https://github.com/trainprotocol/contracts/tree/main/chains/aztec). Early-stage networks live on their own `main-add-<network>` branch, e.g. [Bitcoin](https://github.com/trainprotocol/contracts/tree/main-add-bitcoin) and [Sui](https://github.com/trainprotocol/contracts/tree/main-add-sui).
+
+    The condensed EVM interface (see [`Train.sol`](https://github.com/TrainProtocol/contracts/blob/main/chains/evm/solidity/src/Train.sol) for the full implementation):
 
     ```solidity
-    contract TRAINERC20 {
+    contract Train {
 
-      /// @dev Emitted when an HTLC is created and ERC20 tokens are committed.
-      /// @param Id The unique identifier of the HTLC.
-      /// @param hopChains The sequence of chains forming the path from the source to the destination chain.
-      /// @param hopAssets The sequence of assets being swapped along the path.
-      /// @param hopAddresses The sequence of addresses involved along the path.
-      /// @param dstChain The destination blockchain.
-      /// @param dstAddress The recipient address on the destination chain.
-      /// @param dstAsset The asset on the destination chain.
-      /// @param sender The creator of the HTLC.
-      /// @param srcReceiver The recipient of the funds if conditions are met.
-      /// @param srcAsset The asset being locked.
-      /// @param amount The amount of ERC20 tokens locked in the HTLC.
-      /// @param timelock The timestamp after which the funds can be refunded.
-      /// @param tokenContract The address of the ERC20 token contract.
-      event TokenCommitted(
-          bytes32 indexed Id,
-          string[] hopChains,
-          string[] hopAssets,
-          string[] hopAddresses,
-          string dstChain,
-          string dstAddress,
-          string dstAsset,
-          address indexed sender,
-          address indexed srcReceiver,
-          string srcAsset,
-          uint256 amount,
-          uint48 timelock,
-          address tokenContract
-      );
+      /// @dev The hashlock is the lock identifier: sha256(abi.encodePacked(secret)).
+      /// User locks are keyed by hashlock; solver locks are keyed by (hashlock, solver) —
+      /// at most ONE lock per solver per hashlock, ever (the retry / double-funding guard).
 
-      /// @dev Emitted when an HTLC is locked with a hashlock and timelock.
-      /// @param reward The reward amount (in ERC20 token) associated with the HTLC.
-      /// @param rewardTimelock The timelock (timestamp) after which the reward can be claimed.
-      event TokenLocked(
-        bytes32 indexed Id,
-        bytes32 hashlock,
+      enum LockStatus { Empty, Pending, Refunded, Redeemed }
+
+      /// @notice Parameters for creating a user lock.
+      struct UserLockParams {
+        bytes32 hashlock;
+        uint256 amount;
+        uint256 rewardAmount;        // reward expected on the destination side (informational)
+        uint48 timelockDelta;        // refund becomes possible at startTime + timelockDelta
+        uint48 rewardTimelockDelta;  // echoed for the solver (informational)
+        uint48 quoteExpiry;          // lock creation reverts after this timestamp (QuoteExpired)
+        address recipient;           // receives the payout on redeem
+        address refundTo;            // receives the funds on refund
+        address token;               // address(0) for native
+        address payoutCurve;         // optional payout curve, address(0) for full payout
+        bytes payoutCurveData;
+        string rewardToken;
+        string rewardRecipient;
+        string srcChain;
+      }
+
+      /// @notice Parameters for creating a solver lock.
+      struct SolverLockParams {
+        bytes32 hashlock;
+        uint256 amount;
+        uint256 reward;              // escrowed alongside the amount
+        uint48 timelockDelta;
+        uint48 rewardTimelockDelta;  // reward routes to rewardRecipient before this, to the redeemer after
+        address recipient;
+        address rewardRecipient;
+        address refundTo;
+        address token;
+        address rewardToken;
+        address payoutCurve;
+        bytes payoutCurveData;
+        string srcChain;
+      }
+
+      /// @notice Cross-chain destination details (logged only, not stored).
+      struct DestinationInfo {
+        string dstChain;
+        string dstAddress;
+        uint256 dstAmount;
+        string dstToken;
+      }
+
+      /// @dev Emitted when a user creates a lock.
+      event UserLocked(
+        bytes32 indexed hashlock,
+        address indexed sender,
+        address indexed recipient,
+        string srcChain,
+        address token,
+        uint256 amount,
+        uint48 timelock,
+        address payoutCurve,
         string dstChain,
         string dstAddress,
-        string dstAsset,
+        uint256 dstAmount,
+        string dstToken,
+        uint256 rewardAmount,
+        string rewardToken,
+        string rewardRecipient,
+        uint48 rewardTimelockDelta,
+        uint48 quoteExpiry,
+        bytes userData,
+        bytes solverData
+      );
+
+      /// @dev Emitted when a solver creates a lock. `sender` is the solver —
+      /// at most one lock per (hashlock, solver).
+      event SolverLocked(
+        bytes32 indexed hashlock,
         address indexed sender,
-        address indexed srcReceiver,
-        string srcAsset,
+        address indexed recipient,
+        string srcChain,
+        address token,
         uint256 amount,
         uint256 reward,
-        uint48 rewardTimelock,
+        address rewardToken,
+        address rewardRecipient,
         uint48 timelock,
-        address tokenContract
+        uint48 rewardTimelock,
+        address payoutCurve,
+        string dstChain,
+        string dstAddress,
+        uint256 dstAmount,
+        string dstToken,
+        bytes data
       );
 
-      /// @dev Emitted when a hashlock and timelock are added to an existing HTLC.
-      event TokenLockAdded(bytes32 indexed Id, bytes32 hashlock, uint48 timelock);
-
-      /// @dev Emitted when funds are redeemed from an HTLC using the correct secret.
-      event TokenRedeemed(
-          bytes32 indexed Id,
-          address redeemAddress,
-          uint256 secret,
-          bytes32 hashlock
+      /// @dev Emitted on redemption. `rewardTo` is the rewardRecipient before
+      /// rewardTimelock, and the redeemer after it.
+      event UserRedeemed(bytes32 indexed hashlock, address redeemer, uint256 secret, uint256 payout, uint256 excess);
+      event SolverRedeemed(
+        bytes32 indexed hashlock,
+        address indexed solver,
+        address redeemer,
+        uint256 secret,
+        uint256 payout,
+        uint256 excess,
+        address rewardTo,
+        uint256 reward
       );
 
-      /// @dev Emitted when funds are redeemed from an HTLC using the correct secret.
-      event TokenRefunded(bytes32 indexed Id);
+      /// @dev Emitted on refund (full amount — and for solver locks, the reward — returns to refundTo).
+      event UserRefunded(bytes32 indexed hashlock, address refundTo, uint256 amount);
+      event SolverRefunded(bytes32 indexed hashlock, address indexed solver, address refundTo, uint256 amount, uint256 reward);
 
+      /// @notice Create a user lock to initiate a cross-chain swap (caller funds the lock).
+      /// @dev Payable: send `params.amount` as msg.value for native locks; 0 for ERC20 locks.
+      function userLock(UserLockParams calldata params, DestinationInfo calldata dst, bytes calldata userData, bytes calldata solverData) external payable { ... }
 
-      /// @notice Creates and commits a new hashed time-locked contract (HTLC) for ERC20 tokens.
-      /// @dev Transfers the specified amount of ERC20 tokens to the contract and emits a `TokenCommitted` event.
-      /// @param hopChains The sequence of chains forming the path from the source to the destination chain.
-      /// @param hopAssets The sequence of assets being swapped along the path.
-      /// @param hopAddresses The sequence of addresses involved along the path.
-      /// @param dstChain The destination blockchain.
-      /// @param dstAsset The asset on the destination chain.
-      /// @param dstAddress The recipient address on the destination chain.
-      /// @param srcAsset The asset being locked.
-      /// @param srcReceiver The recipient of the funds if conditions are met.
-      /// @param timelock The timestamp after which the funds can be refunded.
-      /// @param amount The amount of ERC20 tokens to lock in the HTLC.
-      /// @param tokenContract The address of the ERC20 token contract.
-      /// @return Id The unique identifier of the created HTLC.
-      function commit(
-        string[] calldata hopChains,
-        string[] calldata hopAssets,
-        string[] calldata hopAddresses,
-        string calldata dstChain,
-        string calldata dstAsset,
-        string calldata dstAddress,
-        string calldata srcAsset,
-        address srcReceiver,
-        uint48 timelock,
-        uint256 amount,
-        address tokenContract
-      ) external _validTimelock(timelock) nonReentrant returns (bytes32 Id) { ... }
+      /// @notice Permissionless, ERC20-only variant: funds are pulled from msg.sender but the
+      /// lock is attributed to `user`. This is the gasless TrainRouter's forwarding target.
+      function userLockFor(address user, UserLockParams calldata params, DestinationInfo calldata dst, bytes calldata userData, bytes calldata solverData) external { ... }
 
-      /// @notice Adds a hashlock and updates the timelock for an existing HTLC.
-      /// @dev Can only be called by the HTLC's creator if the HTLC exists and has not been claimed. Emits a `TokenLockAdded` event.
-      /// @param Id The unique identifier of the HTLC to update.
-      /// @param hashlock The hashlock to be added.
-      /// @param timelock The new timelock to be set.
-      /// @return bytes32 The updated HTLC identifier.
-      function addLock(
-        bytes32 Id,
-        bytes32 hashlock,
-        uint48 timelock
-      ) external _exists(Id) _validTimelock(timelock) nonReentrant returns (bytes32) { ... }
+      /// @notice Create a solver lock (amount + reward escrowed). Reverts with
+      /// SolverLockAlreadyExists if this solver already used this hashlock.
+      function solverLock(SolverLockParams calldata params, DestinationInfo calldata dst, bytes calldata data) external payable { ... }
 
+      /// @notice Redeem a user lock with the secret. Recipient gets the payout
+      /// (curve-computed, full amount when no curve); any excess goes to refundTo.
+      function redeemUser(bytes32 hashlock, uint256 secret) external { ... }
 
-      /// @notice Adds a hashlock and updates the timelock for an existing HTLC using a signed message.
-      /// @dev Verifies the provided signature and updates the HTLC if valid. Emits a `TokenLockAdded` event.
-      /// @param message The details of the lock to be added, including the HTLC ID, hashlock, and timelock.
-      /// @param r The `r` value of the ECDSA signature.
-      /// @param s The `s` value of the ECDSA signature.
-      /// @param v The `v` value of the ECDSA signature.
-      /// @return bytes32 The updated HTLC identifier.
-      function addLockSig(
-        addLockMsg calldata message,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-      ) external _exists(message.Id) _validTimelock(message.timelock) nonReentrant returns (bytes32) { ... }
+      /// @notice Redeem a specific solver's lock with the secret. The reward goes to
+      /// rewardRecipient before rewardTimelock, and to the caller after it.
+      function redeemSolver(bytes32 hashlock, address solver, uint256 secret) external { ... }
 
-      /// @notice Locks ERC20 tokens in a new hashed time-locked contract (HTLC).
-      /// @dev Transfers the specified amount of ERC20 tokens to the contract and emits a `TokenLocked` event.
-      /// @param Id The unique identifier of the HTLC.
-      /// @param hashlock The hash of the secret required for redemption.
-      /// @param reward The reward amount in ERC20 token granted to the caller of redeem.
-      /// @param rewardTimelock The timelock (timestamp) after which the reward can be claimed.
-      /// @param timelock The timestamp after which the funds can be refunded if not claimed.
-      /// @param srcReceiver The recipient of the funds if the HTLC is successfully redeemed.
-      /// @param srcAsset The asset being locked.
-      /// @param dstChain The destination blockchain for the swap.
-      /// @param dstAddress The recipient address on the destination chain.
-      /// @param dstAsset The asset on the destination chain.
-      /// @param amount The amount of ERC20 tokens to lock in the HTLC.
-      /// @param tokenContract The address of the ERC20 token contract.
-      /// @return bytes32 The unique identifier of the created HTLC.
-      function lock(
-        bytes32 Id,
-        bytes32 hashlock,
-        uint256 reward,
-        uint48 rewardTimelock,
-        uint48 timelock,
-        address srcReceiver,
-        string calldata srcAsset,
-        string calldata dstChain,
-        string calldata dstAddress,
-        string calldata dstAsset,
-        uint256 amount,
-        address tokenContract
-      ) external _validTimelock(timelock) nonReentrant returns (bytes32) { ... }
+      /// @notice Refund a user lock: recipient may refund anytime, others after the timelock.
+      function refundUser(bytes32 hashlock) external { ... }
 
-      /// @notice Redeems funds from an HTLC using the correct secret.
-      /// @dev Verifies the provided secret against the hashlock and transfers the funds to the recipient. Emits a `TokenRedeemed` event.
-      /// @param Id The unique identifier of the HTLC to be redeemed.
-      /// @param secret The secret value used to unlock the HTLC.
-      /// @return bool Returns `true` if the redemption is successful.
-      function redeem(bytes32 Id, uint256 secret) external _exists(Id) nonReentrant returns (bool) { ... }
+      /// @notice Refund a solver's lock after its timelock (amount + reward to refundTo).
+      function refundSolver(bytes32 hashlock, address solver) external { ... }
 
-      /// @notice Refunds the locked funds from an HTLC after the timelock expires.
-      /// @dev Can only be called if the HTLC exists and the timelock has passed. Emits a `TokenRefunded` event.
-      /// @param Id The unique identifier of the HTLC to be refunded.
-      /// @return bool Returns `true` if the refund is successful.
-      function refund(bytes32 Id) external _exists(Id) nonReentrant returns (bool) { ...}
+      /// @notice Lock lookups.
+      function getUserLock(bytes32 hashlock) external view returns (UserLock memory) { ... }
+      function getSolverLock(bytes32 hashlock, address solver) external view returns (SolverLock memory) { ... }
+
+      /// @notice Windowed enumeration of a user's historical locks (scale-safe).
+      function getUserLockHashes(address user, uint256 offset, uint256 limit) external view returns (bytes32[] memory, uint256 total) { ... }
+      function getUserLocks(address user, uint256 offset, uint256 limit) external view returns (UserLock[] memory, uint256 total) { ... }
 
     }
     ```

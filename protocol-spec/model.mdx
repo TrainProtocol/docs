@@ -35,15 +35,15 @@ sequenceDiagram
     participant Solver
     participant DC as Destination Chain
     
-    User->>SC: lock() with hashlock
-    SC-->>Solver: TokenLocked
-    Solver->>DC: lock() with same hashlock
-    DC-->>User: TokenLocked
+    User->>SC: userLock() with hashlock
+    SC-->>Solver: UserLocked
+    Solver->>DC: solverLock() with same hashlock
+    DC-->>User: SolverLocked
     User->>Solver: sign(secret)
-    Solver->>DC: redeem(secret)
-    DC-->>User: TokenRedeemed
-    Solver->>SC: redeem(secret)
-    SC-->>Solver: TokenRedeemed
+    Solver->>DC: redeemSolver(secret)
+    DC-->>User: SolverRedeemed
+    Solver->>SC: redeemUser(secret)
+    SC-->>Solver: UserRedeemed
 ```
 </Accordion>
 

@@ -17,12 +17,12 @@ sequenceDiagram
     participant DC as Destination Chain
 
 	
-    User->>SC: lock() with hashlock
-    SC-->>Solver: TokenLocked
+    User->>SC: userLock() with hashlock
+    SC-->>Solver: UserLocked
     
     Note over User,SC: Timelock passes
-    User->>SC: refund()
-    SC-->>User: TokenRefunded
+    User->>SC: refundUser()
+    SC-->>User: UserRefunded
 ```
 </Accordion>
 
@@ -40,18 +40,18 @@ sequenceDiagram
     participant DC as Destination Chain
 
 	
-    User->>SC: lock() with hashlock
-    SC-->>Solver: TokenLocked
-    Solver->>DC: lock() with same hashlock
-    DC-->>User: TokenLocked
+    User->>SC: userLock() with hashlock
+    SC-->>Solver: UserLocked
+    Solver->>DC: solverLock() with same hashlock
+    DC-->>User: SolverLocked
     
     Note over User,SC: Timelock passes
-    User->>SC: refund()
-    SC-->>User: TokenRefunded
+    User->>SC: refundUser()
+    SC-->>User: UserRefunded
 		
 		Note over Solver,DC: Timelock passes
-    Solver->>DC: refund()
-    DC-->>Solver: TokenRefunded
+    Solver->>DC: refundSolver()
+    DC-->>Solver: SolverRefunded
 ```
 
 </Accordion>
@@ -74,15 +74,15 @@ sequenceDiagram
     participant DC as Destination Chain
 
 	
-    User->>SC: lock() with hashlock
-    SC-->>Solver: TokenLocked
-    Solver->>DC: lock() with same hashlock
-    DC-->>User: TokenLocked
+    User->>SC: userLock() with hashlock
+    SC-->>Solver: UserLocked
+    Solver->>DC: solverLock() with same hashlock
+    DC-->>User: SolverLocked
     User->>Solver: sign(secret)
-    Solver->>SC: redeem(secret)
-    SC-->>Solver: TokenRedeemed
-    User->>DC: redeem(secret)
-    DC-->>User: TokenRedeemed
+    Solver->>SC: redeemUser(secret)
+    SC-->>Solver: UserRedeemed
+    User->>DC: redeemSolver(secret)
+    DC-->>User: SolverRedeemed
 ```
 </Accordion>
 
@@ -100,17 +100,17 @@ sequenceDiagram
     participant DC as Destination Chain
 
 	
-    User->>SC: lock() with hashlock
-    SC-->>Solver: TokenLocked
-    Solver->>DC: lock() with same hashlock
-    DC-->>User: TokenLocked
+    User->>SC: userLock() with hashlock
+    SC-->>Solver: UserLocked
+    Solver->>DC: solverLock() with same hashlock
+    DC-->>User: SolverLocked
     User->>Solver: sign(secret)
     Note over Solver,DC: Timelock passes
-    Solver->>DC: refund()
-    DC-->>Solver: TokenRefunded
+    Solver->>DC: refundSolver()
+    DC-->>Solver: SolverRefunded
     Note over User,SC: Timelock passes
-    User->>SC: refund()
-    SC-->>User: TokenRefunded
+    User->>SC: refundUser()
+    SC-->>User: UserRefunded
 ```
 
 </Accordion>

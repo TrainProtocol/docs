@@ -4,9 +4,16 @@ description: 'Protocol updates and improvements'
 mode: wide
 ---
 
+<Update label="2026-07-31" description="v0.6">
+    - Released contracts **v3**: all deployment addresses rotated (deterministic CreateX deploys, salt `train.protocol.v3`) — see the updated [Deployments](/deployments) page.
+    - Solver locks are now keyed by **(hashlock, solver address)** instead of an incremental index. Each solver gets exactly one slot per hashlock (the double-lock guard), so a blind retry can never double-fund a swap and no one can squat another solver's slot. The [Core spec](/protocol-spec/core) and [implementation guides](/protocol-spec/implementation-solver) are updated to the v3 interface.
+    - Recorded mainnet deployments for Starknet, Fuel Ignition, and Tempo alongside the 7 EVM mainnets.
+    - Aztec upgraded to v5.0.1 with solver-keyed locks on testnet; Solana devnet now covers the full SOL/SPL reward matrix with three gasless rails.
+</Update>
+
 <Update label="2026-07-29" description="v0.5">
     - EVM contracts rewritten on Foundry with deterministic CREATE2 deployment, and relaunched on mainnet with one shared address across Ethereum, Arbitrum One, OP Mainnet, Base, Polygon PoS, BSC, and Robinhood.
-    - Updated the Starknet and Fuel mainnet contracts to the current audited version.
+    - Updated the Starknet and Fuel mainnet contracts to the current version.
     - Launched on [Tempo](https://tempo.xyz) mainnet, TRAIN's first deployment to a chain with no native gas token.
     - See the new [Deployments](/deployments) page for the full, current list of mainnet, testnet, and in-progress network addresses — it replaces the old Contracts page.
 </Update>

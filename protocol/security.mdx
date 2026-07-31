@@ -12,4 +12,8 @@ icon: lock
 
 - **Immutability**: The contracts are immutable. This eliminates the risks associated with upgrades.
 
-- **Simplicity**: HTLC contracts are straightforward locking mechanisms. Each contract typically consists of about [300 lines of code](https://github.com/TrainProtocol/contracts/blob/main/chains/evm/solidity/contracts/Train.sol) in any smart contract language.
+- **Simplicity**: HTLC contracts are straightforward locking mechanisms — a single [`Train` contract](https://github.com/TrainProtocol/contracts/blob/main/chains/evm/solidity/src/Train.sol) per chain with a small surface: lock, redeem, refund.
+
+<Note>
+The TRAIN contracts have not yet been externally audited. The properties above describe the protocol's design; an independent audit and bug bounty are planned before the protocol is considered production-final.
+</Note>

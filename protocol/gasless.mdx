@@ -8,6 +8,10 @@ Starting a swap normally costs the user two things: an ERC20 `approve` transacti
 
 On EVM chains and Starknet this is handled by a dedicated contract, the **TrainRouter**. On chains with protocol-level fee abstraction (Tempo, Aztec, Solana), no router is needed — the chain itself provides the gasless mechanism.
 
+<Note>
+The TrainRouter and payout curves are currently deployed on **testnets only**. Mainnet deployments are `Train` alone — mainnet locks pass `payoutCurve = 0` (full payout) — with the Router's deterministic address reserved for a later rollout. See [Deployments](/deployments) for current addresses.
+</Note>
+
 ## TrainRouter Architecture
 
 The TrainRouter is a **stateless forwarding contract**: it has no owner, no privileged roles, no stored addresses, and it never holds funds between transactions. Its only job is to pull the user's tokens using a gasless token-transfer standard and forward them into `Train.userLockFor` in the same transaction.
@@ -70,8 +74,8 @@ The single shipped curve, `ConstantPayoutCurve`, returns the full amount — a d
   <Accordion title="Aztec — protocol-level fee abstraction">
     Aztec has fee abstraction built into the protocol: fees are paid in **Fee Juice** (bridged from L1) or covered by a sponsored **Fee Paying Contract (FPC)** acting as a paymaster. Gasless UX comes from the chain itself, so no TRAIN-side router exists on Aztec.
   </Accordion>
-  <Accordion title="Solana — native fee-payer separation">
-    Solana transactions natively separate the **fee payer** from the instruction signers: every TRAIN lock uses a sponsor wallet as `payer` (fees and rent) while the depositor only authorizes the debit. The gas payer and the depositor are always distinct wallets, with no router contract needed.
+  <Accordion title="Solana — three gasless rails, no router">
+    Every TRAIN lock instruction separates the `payer` account (fees and rent) from the `sender` account (funds authority), which enables three gasless rails: **fee-payer sponsorship** (the relayer pays fees, the user co-signs only to authorize the debit), **durable nonce** (same, but the user can sign fully offline with no expiry), and **signed intent** (the user signs only an off-chain message — verified on-chain via the ed25519 precompile — and never signs a transaction at all, with a single-use consumed-intent guard mirroring the EVM Router's replay protection).
   </Accordion>
   <Accordion title="Tron — router with chain-specific addresses">
     Tron runs the same `Train` + `TrainRouter` pair as other EVM chains, but Tron has no CREATE2 factory and uses a different address derivation, so its contract addresses differ from the shared EVM set.

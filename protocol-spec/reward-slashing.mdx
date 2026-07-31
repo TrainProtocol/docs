@@ -15,7 +15,7 @@ The **Reward-Slashing Mechanism** incentivizes proper Solver behavior. The proce
 
 ## Implementation Details
 
-When a Solver locks funds for a user, the **lock** function requires additional **reward amount** along with a **rewardTimelock** parameter. This timelock must be set to a future timestamp and cannot exceed the timelock duration of the associated HTLC. The system records these reward details both through event emission in the **TokenLocked** event and storage in a rewards mapping, which links to the unique ID of the corresponding HTLC. Users can access reward information for any HTLC by calling the **getReward** function with the appropriate ID.
+When a Solver locks funds for a user, the **solverLock** function escrows an additional **reward** amount along with a **rewardTimelock** parameter. This timelock must be set to a future timestamp and cannot exceed the timelock duration of the associated lock. The reward details are recorded in the **SolverLocked** event and stored inside the solver's lock itself — solver locks are keyed by **(hashlock, solver address)**, so anyone can read the reward for a given swap by calling **getSolverLock(hashlock, solver)**.
 
 <Warning>
   The `rewardTimelock` must always be set to a future timestamp and cannot exceed the HTLC timelock duration.
@@ -25,25 +25,20 @@ When a Solver locks funds for a user, the **lock** function requires additional 
 ## Redemption Process
 
 
-The redeem function handles rewards differently based on timing and who initiates the redemption. The logic is illustrated below using pseudocode:
+The **redeemSolver** function routes the reward differently based on timing. The logic is illustrated below using pseudocode:
 
 ```solidity
+transfer(funds, recipient);
 if (!rewardTimelock.expired) {
-    transfer(reward, solver);
-    transfer(funds, user);
+    transfer(reward, rewardRecipient);  // the Solver acted in time
 } else {
-    if (msg.sender == user) {
-        transfer(reward + funds, user);
-    } else {
-        transfer(funds, user);
-        transfer(reward, msg.sender);
-    }
+    transfer(reward, msg.sender);       // bounty for whoever redeems
 }
 ```
 
 ## Security Considerations
 
-The `rewardTimelock` serves as a crucial protection against MEV attacks. It provides Solvers adequate time to assess whether they can execute the **redeem** function within the specified timeframe. Even if Solvers miss their initial window, they can still call the function later to retrieve their reward, provided no one else has already executed it.
+The `rewardTimelock` serves as a crucial protection against MEV attacks. It provides Solvers adequate time to assess whether they can execute the **redeemSolver** function within the specified timeframe. Even if Solvers miss their initial window, they can still call the function later to retrieve their reward, provided no one else has already executed it.
 
 
 

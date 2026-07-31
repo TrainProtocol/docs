@@ -6,7 +6,7 @@ icon: network-wired
 
 <Steps>
   <Step title="Contract Implementation">
-    Implement [HTLC with recoverable secret generation](/protocol/atomic-swaps-secret_gen) for the new network on its own `main-add-<network>` branch of the [contracts repo](https://github.com/TrainProtocol/contracts). Networks stay on their branch until they're audited — only audited networks get merged into `main` and published on the [Deployments](/deployments) page.
+    Implement [HTLC with recoverable secret generation](/protocol/atomic-swaps-secret_gen) for the new network on its own `main-add-<network>` branch of the [contracts repo](https://github.com/TrainProtocol/contracts). Networks are developed and tested on their branch, then merged into `main` once production-track and published on the [Deployments](/deployments) page.
   </Step>
   <Step title="Solver Agent Implementation">
     If there is no existing implementation (e.g., EVM), implement the Solver Agent Chain Library for the new network (functions for interacting with deployed HTLC contracts on specific chains). See the [Solver Implementation](/protocol-spec/implementation-solver) spec.
@@ -22,4 +22,4 @@ icon: network-wired
   </Step>
 </Steps>
 
-These steps can be performed independently without needing permission or interaction with any party or entity — anyone can open a `main-add-<network>` branch and start integrating a new chain. The network-adding process in the TRAIN protocol is **similar to adding an ERC20 token to the Uniswap protocol**, making bridging trustless and permissionless; the audit gate before merging to `main` is what keeps [live deployments](/deployments) to a trusted set. The detailed implementation steps can be found in the [Solver Implementation](/protocol-spec/implementation-solver) spec.
+These steps can be performed independently without needing permission or interaction with any party or entity — anyone can open a `main-add-<network>` branch and start integrating a new chain. The network-adding process in the TRAIN protocol is **similar to adding an ERC20 token to the Uniswap protocol**, making bridging trustless and permissionless; a network graduates to `main` and to the [Deployments](/deployments) page once its implementation is complete and verified end-to-end. The detailed implementation steps can be found in the [Solver Implementation](/protocol-spec/implementation-solver) spec.
